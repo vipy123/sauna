@@ -3,15 +3,15 @@
 id: Long
 name: String
 address: String
-phonenumber:String
-saunavuorot:List&lt;String&gt;
+phonenumber: String
+saunavuorot: List&lt;Varaus&gt;
 
-[waiting for message]</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>780</x><y>290</y><w>210</w><h>80</h></coordinates><panel_attributes>_object: Sauna_
+[waiting for message]</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>780</x><y>290</y><w>210</w><h>100</h></coordinates><panel_attributes>_object: Sauna_
 --
 id: Long
 address: String
 reservations: List&lt;Varaus&gt;
-
+description: String
 
 [waiting for message]</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>410</x><y>280</y><w>210</w><h>110</h></coordinates><panel_attributes>_object:Varaus_
 --
@@ -22,6 +22,7 @@ time_start: datetime
 time_end: datetime
 
 [waiting for message]</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>240</x><y>330</y><w>190</w><h>40</h></coordinates><panel_attributes>lt=&lt;-&gt;
-m1=0..n 
-m2=0.n</panel_attributes><additional_attributes>10;10;170;10</additional_attributes></element><element><id>Relation</id><coordinates><x>610</x><y>330</y><w>190</w><h>40</h></coordinates><panel_attributes>lt=&lt;-
-m1=0..n</panel_attributes><additional_attributes>10;10;170;10</additional_attributes></element></diagram>
+m1=1
+m2=0.n</panel_attributes><additional_attributes>10;10;170;10</additional_attributes></element><element><id>Relation</id><coordinates><x>610</x><y>330</y><w>190</w><h>40</h></coordinates><panel_attributes>lt=&lt;-&gt;
+m1=0..n
+m2=1</panel_attributes><additional_attributes>10;10;170;10</additional_attributes></element></diagram>
