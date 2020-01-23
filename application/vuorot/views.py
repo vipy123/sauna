@@ -6,7 +6,7 @@ from application.vuorot.models import Sauna, Kayttaja
 def sauna_index():
 	saunat = Sauna.query.all()
 
-	return render_template("saunat/saunat.html", saunat=saunat)
+	return render_template("saunat/saunat.html", saunat=Sauna.query.all())
 
 @app.route("/saunat/new/")
 def sauna_form():
@@ -20,8 +20,8 @@ def tallenna_sauna():
 	
 	return "Sauna on tallennettu!"
 
-@app.route("/saunat/<sauna_id>", methods=["POST"])
-def sauna_id(sauna_id=None):
-	sauna = Sauna.query.get(sauna_id)
+@app.route("/saunat/<id>", methods=["GET", "POST"])
+def sauna_id(id):
+	sauna = Sauna.query.get(id)
 	
 	return render_template("saunat/sauna.html", sauna=sauna)

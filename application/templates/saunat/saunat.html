@@ -1,17 +1,18 @@
 {% extends "layout.html" %}
 
 {% block body %}
-  <table>
-    <tr>
-      <th>Varattavat saunat</th>
-      <th><a href="{{ url_for('sauna_form') }}">Lisää uusi sauna</a></th>
-    </tr>
-    {% for sauna in saunat %}
-    <tr>
-	<td>{{ sauna.name }}</td>
-	<td>{{ sauna.address }}</td>
-	<button href="" class="sauna_id" data-id={{sauna.id}}>{{ sauna.name }}</a>
+<table>
+	<tr>
+		<th>Varattavat saunat</th>
+		<th><a href="{{ url_for('sauna_form') }}">Lisää uusi sauna</a></th>
 	</tr>
-    {% endfor %}
-  </table>
+    	{% for sauna in saunat %}
+    	<tr>
+		<td>{{ sauna.id }}</td>
+		<td>{{ sauna.name }}</td>
+		<td>{{ sauna.address }}</td>
+		<a href="{{url_for('sauna_id', id=sauna.id)}}">{{ sauna.name }}</a>
+	</tr>
+	{% endfor %}
+</table>
 {% endblock %}
