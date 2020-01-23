@@ -3,7 +3,7 @@
 * Sauna
 * Vuoro
 
-![luokkakaavio](doc/uml-model.png)
+![luokkakaavio](uml-model.png)
 
 
 ###User storyt
@@ -18,4 +18,4 @@ Eri käyttäjäryhmät:
 	-luoda tunnukset ja kirjautua palveluun
 	-varata ja perua saunavuoroja
 
-![user-story-kaavio](doc/User-story-Diagram.png)
+![user-story-kaavio](User-story-Diagram.png)
