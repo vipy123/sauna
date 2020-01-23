@@ -19,5 +19,5 @@ def tallenna_sauna():
 	return "Sauna on tallennettu!"
 
 @app.route("/saunat/<sauna_id>", methods=["GET"])
-def sauna_index():
-	return render_template("saunat/sauna.html", sauna = #Sauna.query.all())
+def sauna_yks():
+	return render_template("saunat/sauna.html")#, sauna = Sauna.query.all())
