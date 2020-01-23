@@ -1,5 +1,6 @@
-#Dokumentaatio
-##Luokat
+# Dokumentaatio
+
+## Luokat
 * Käyttäjä
 * Sauna
 * Vuoro
@@ -7,7 +8,7 @@
 ![luokkakaavio](uml-model.png)
 
 
-##User storyt
+## User storyt
 
 Eri käyttäjäryhmät:
 -Isännöitsiä/huotoyhtiö/admin:
