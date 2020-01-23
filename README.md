@@ -5,4 +5,4 @@ Taloyhtiöillä on käytössään oman saunansa varaukset osoitteen ja taloyhti�
 
 [Täältä löytyy luokkakaavio](doc/uml-model.png) , [täältä user storyt](doc/userstories.txt) ja [täältä userstory-kaavio](doc/User-story-Diagram.png).
 
-Itse appi rakennetaan [tänne](https://tsoha-saunavuoro.herokuapp.com/)
+[Itse appi rakennetaan tänne](https://tsoha-saunavuoro-app.herokuapp.com)

@@ -1,4 +1,12 @@
-User storyt
+###Luokat
+* Käyttäjä
+* Sauna
+* Vuoro
+
+![luokkakaavio](doc/uml-model.png)
+
+
+###User storyt
 
 Eri käyttäjäryhmät:
 -Isännöitsiä/huotoyhtiö/admin:
@@ -9,3 +17,5 @@ Eri käyttäjäryhmät:
 	-voi etsiä saunan osoitteen perusteella
 	-luoda tunnukset ja kirjautua palveluun
 	-varata ja perua saunavuoroja
+
+![user-story-kaavio](doc/User-story-Diagram.png)
