@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+  
+{% block body %}
+<form method="POST" action="{{ url_for('tallenna_sauna') }}">
+	<input type="text" name="name" placeholder="Saunan nimi"/>
+	<input type="text" name="address" placeholder="Saunan osoite"/>
+	<input type="submit" value="Tallenna sauna"/>
+</form>
+{% endblock %}

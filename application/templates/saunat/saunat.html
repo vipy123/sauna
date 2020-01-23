@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block body %}
+  <table>
+    <tr>
+      <th>Varattavat saunat</th>
+      <th><a href="{{ url_for('sauna_form') }}">Lisää uusi sauna</a></th>
+    </tr>
+    {% for sauna in saunat %}
+    <tr>
+	<a href="{{ url_for('sauna') }}">Lisää uusi sauna</a>
+	<td>{{ sauna.name }}</td>
+	<td>{{ sauna.address }}</td>
+	</tr>
+    {% endfor %}
+  </table>
+{% endblock %}

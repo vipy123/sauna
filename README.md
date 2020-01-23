@@ -4,3 +4,5 @@ Tämän ohjelman tarkoituksena on mahdollistaa taloyhtiöiden saunan varaus. Ohj
 Taloyhtiöillä on käytössään oman saunansa varaukset osoitteen ja taloyhtiökohtaisen salasanan mukaisesti. Kukin käyttäjä voi muokata vain omia tietojaan. Jotkin taloyhtiöt voivat kuitenkin mahdollistaa oman saunansa vuokrauksen talon ulkopuolelle.
 
 [Täältä löytyy luokkakaavio](doc/uml-model.png) , [täältä user storyt](doc/userstories.txt) ja [täältä userstory-kaavio](doc/User-story-Diagram.png).
+
+Itse appi rakennetaan [tänne](https://tsoha-saunavuoro.herokuapp.com/)
