@@ -6,20 +6,23 @@ address: String
 phonenumber: String
 saunavuorot: List&lt;Varaus&gt;
 
-[waiting for message]</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>780</x><y>290</y><w>210</w><h>100</h></coordinates><panel_attributes>_object: Sauna_
+[waiting for message]</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>780</x><y>290</y><w>210</w><h>110</h></coordinates><panel_attributes>_object: Sauna_
 --
 id: Long
 address: String
 reservations: List&lt;Varaus&gt;
+price_per_hour: Float
 description: String
 
-[waiting for message]</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>410</x><y>280</y><w>210</w><h>110</h></coordinates><panel_attributes>_object:Varaus_
+[waiting for message]</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>410</x><y>280</y><w>210</w><h>140</h></coordinates><panel_attributes>_object:Varaus_
 --
 id: Long
 user_id: Long
 sauna_id: Long
 time_start: datetime
 time_end: datetime
+price: Float(Sauna.tuntihinta *
+(time_end - time_start))
 
 [waiting for message]</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>240</x><y>330</y><w>190</w><h>40</h></coordinates><panel_attributes>lt=&lt;-&gt;
 m1=1
