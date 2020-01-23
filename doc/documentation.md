@@ -21,3 +21,5 @@ Eri käyttäjäryhmät:
 	-varata ja perua saunavuoroja
 
 ![user-story-kaavio](User-story-Diagram.png)
+
+Tällä hetkellä ohjelma toimii paikallisesti, mutta herokussa jostakin syystä ei. Selvittelen ongelmaa.
