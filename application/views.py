@@ -9,7 +9,7 @@ app.secret_key = b'\xf9\x0bn\xe2[M\x80\xdf\xcdVV\x04\x04\x8e\xf5\xc0'
 def index():
 #    if 'username' in session:
 #        return 'Logged in as %s' % escape(session['username'])
-    return rendirect("/saunat/")
+    return render_template("/saunat/saunat.html")
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
