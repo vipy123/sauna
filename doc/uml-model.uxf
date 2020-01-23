@@ -1,4 +1,4 @@
-<diagram program="umletino" version="14.3.0"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>40</x><y>280</y><w>210</w><h>110</h></coordinates><panel_attributes>_object:UserObject_
+<diagram program="umletino" version="14.3.0"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>40</x><y>280</y><w>210</w><h>110</h></coordinates><panel_attributes>_object:Kayttaja_
 --
 id: Long
 name: String
@@ -6,15 +6,16 @@ address: String
 phonenumber: String
 saunavuorot: List&lt;Varaus&gt;
 
-[waiting for message]</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>780</x><y>290</y><w>210</w><h>110</h></coordinates><panel_attributes>_object: Sauna_
+[waiting for message]</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>780</x><y>290</y><w>210</w><h>120</h></coordinates><panel_attributes>_object: Sauna_
 --
 id: Long
+name: String
 address: String
 reservations: List&lt;Varaus&gt;
 price_per_hour: Float
 description: String
 
-[waiting for message]</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>410</x><y>280</y><w>210</w><h>140</h></coordinates><panel_attributes>_object:Varaus_
+[waiting for message]</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>410</x><y>280</y><w>210</w><h>140</h></coordinates><panel_attributes>_object:Vuoro_
 --
 id: Long
 user_id: Long
