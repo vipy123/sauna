@@ -1,10 +1,12 @@
 from application import app, db
-from flask import render_template, request
+from flask import render_template, request, url_for, escape
 from application.vuorot.models import Sauna, Kayttaja
 
 @app.route("/saunat/", methods=["GET"])
 def sauna_index():
-	return render_template("saunat/saunat.html", saunat = Sauna.query.all())
+	saunat = Sauna.query.all()
+
+	return render_template("saunat/saunat.html", saunat=saunat)
 
 @app.route("/saunat/new/")
 def sauna_form():
@@ -18,6 +20,8 @@ def tallenna_sauna():
 	
 	return "Sauna on tallennettu!"
 
-@app.route("/saunat/<sauna_id>", methods=["GET"])
-def sauna_yks():
-	return render_template("saunat/sauna.html")#, sauna = Sauna.query.all())
+@app.route("/saunat/<sauna_id>", methods=["POST"])
+def sauna_id(sauna_id=None):
+	sauna = Sauna.query.get(sauna_id)
+	
+	return render_template("saunat/sauna.html", sauna=sauna)
