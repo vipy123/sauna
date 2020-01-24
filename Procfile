@@ -1,1 +1,1 @@
-web: gunicorn --preload --workers 1 saunavuoro:app
+web: gunicorn --preload --workers 1 run:app
