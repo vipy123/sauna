@@ -22,4 +22,4 @@ Eri käyttäjäryhmät:
 
 ![user-story-kaavio](User-story-Diagram.png)
 
-Tällä hetkellä ohjelma toimii vain paikallisesti, mutta herokussa jostakin syystä ei. Selvittelen ongelmaa.
+

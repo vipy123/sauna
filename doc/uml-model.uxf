@@ -14,6 +14,7 @@ address: String
 reservations: List&lt;Varaus&gt;
 price_per_hour: Float
 description: String
+saldo: Float
 
 [waiting for message]</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>410</x><y>280</y><w>210</w><h>140</h></coordinates><panel_attributes>_object:Vuoro_
 --
