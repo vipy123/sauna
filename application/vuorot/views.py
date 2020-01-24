@@ -1,5 +1,5 @@
 from application import app, db
-from flask import render_template, request, url_for, escape
+from flask import render_template, request, url_for, escape, redirect
 from application.vuorot.models import Sauna, Kayttaja
 
 @app.route("/saunat/", methods=["GET"])
@@ -18,7 +18,7 @@ def tallenna_sauna():
 	db.session().add(s)
 	db.session().commit()
 	
-	return "Sauna on tallennettu!"
+	return redirect("/saunat/")
 
 @app.route("/saunat/<id>", methods=["GET", "POST"])
 def sauna_id(id):
