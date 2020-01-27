@@ -13,4 +13,9 @@
     </tr>
 
   </table>
+  <form method="GET" action="{{ url_for('sauna_update', id=sauna.id) }}">
+    <input type="submit" value="Muuta tietoja"/>
+  </form>
+    
+      
 {% endblock %}

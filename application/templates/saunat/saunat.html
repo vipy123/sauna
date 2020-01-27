@@ -9,9 +9,8 @@
     	{% for sauna in saunat %}
     	<tr>
 		<td>{{ sauna.id }}</td>
-		<td>{{ sauna.name }}</td>
+		<td><a href="{{url_for('sauna_id', id=sauna.id)}}">{{ sauna.name }}</a></td>
 		<td>{{ sauna.address }}</td>
-		<a href="{{url_for('sauna_id', id=sauna.id)}}">{{ sauna.name }}</a>
 	</tr>
 	{% endfor %}
 </table>

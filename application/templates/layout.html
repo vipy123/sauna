@@ -6,10 +6,15 @@
   </head>
 
   <body>
+    {% if current_user.is_authenticated %}
+    <p>Kirjautunut nimellä {{current_user.username }}</p>
+    {% else %}
+    <a href="{{ url_for('auth_login') }}">Kirjaudu</a>
+    {% endif %}
     <th>Tervetuloa saunaan!</th>
-    <ul>
-      <li><a href="{{ url_for('sauna_index') }}">Takaisin saunalistaukseen</a></li>
-    </ul>
+    <tr>
+      <td><a href="{{ url_for('sauna_index') }}">Takaisin saunalistaukseen</a></td>
+    </tr>
   <body>
   {% block body %}
   <p>Tähän tuodaan sisältö muualta.</p>
