@@ -5,4 +5,8 @@ Taloyhtiöillä on käytössään oman saunansa varaukset osoitteen ja taloyhti�
 
 [Täältä löytyy dokumentaatio](doc/documentation.md) ja [täältä userstory-kaavio](doc/User-story-Diagram.png).
 
+Ohjelmaa voi käyttää tietokantaan lisätyllä käyttäjätunnuksella:
+username: admin
+password: password
+
 [Itse appi rakennetaan tänne](https://tsoha-saunavuoro-app.herokuapp.com)
