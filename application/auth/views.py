@@ -11,10 +11,10 @@ def auth_login():
 	
 	form = LoginForm(request.form)
 	
-	kayttaja = Kayttaja.query.filter_by(username=form.username.data, password=form.password.data, name=form.name.data).first()
+	kayttaja = Kayttaja.query.filter_by(username=form.username.data, password=form.password.data).first()
 	if not kayttaja:
 		return render_template("auth/loginform.html", form=form, error="Käyttäjää ei löydy")
-	print("Käyttäjä " + kayttaja.name + " tunnistettiin")
+	print("Käyttäjä " + kayttaja.username + " tunnistettiin")
 	login_user(kayttaja)
 
 	return redirect(url_for("sauna_index"))

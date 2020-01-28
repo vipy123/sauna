@@ -1,5 +1,7 @@
 from application import app, db
 from flask import render_template, request, url_for, escape, redirect
+from flask_login import login_required, current_user
+
 from application.vuorot.models import Sauna
 from application.vuorot.forms import SaunaForm, SaunaUpdateForm
 
@@ -10,15 +12,19 @@ def sauna_index():
 	return render_template("saunat/saunat.html", saunat=Sauna.query.all())
 
 @app.route("/saunat/new/")
+@login_required
 def sauna_form():
 	return render_template("saunat/new.html", form = SaunaForm())
 
 @app.route("/saunat/new/", methods=["POST"])
+@login_required
 def tallenna_sauna():
 	form = SaunaForm(request.form)
 	if not form.validate():
 		return render_template("saunat/new.html", form=form)
 	s = Sauna(form.name.data, form.address.data)
+	s.admin_id = current_user.id
+
 	db.session().add(s)
 	db.session().commit()
 	
@@ -32,6 +38,7 @@ def sauna_id(id):
 
 
 @app.route("/saunat/<id>/update", methods=["GET"])
+@login_required
 def sauna_update(id):
 	s = Sauna.query.get(id)
 	form = SaunaUpdateForm()
@@ -41,6 +48,7 @@ def sauna_update(id):
 	return render_template("saunat/updateSauna.html", form=form, sauna=s)
 
 @app.route("/saunat/<id>/update", methods=["POST"])
+@login_required
 def sauna_updateInfo(id):
 	form = SaunaUpdateForm(request.form)
 	name = request.form.get("name")

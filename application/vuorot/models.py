@@ -7,7 +7,7 @@ class Sauna(db.Model):
 
 	name = db.Column(db.String(144), nullable=False)
 	address = db.Column(db.String(200), nullable=False)
-	admin_id = db.Column(db.Integer)
+	admin_id = db.Column(db.Integer, db.ForeignKey('kayttaja.id'), nullable=False)
 
 	def __init__(self, name, address):
 		self.name = name
