@@ -14,6 +14,17 @@
     <tr>
       <td>{{sauna.admin}}</td>
     </tr>
+    <tr>
+      <a href="{{url_for('sauna_kalenteri', id=sauna.id)}}">Varauskalenteri</a>
+    </tr>
+    {% for vuoro in vuorot %}
+    	<tr>
+		<td>{{ vuoro.id }}</td>
+		<td><a href="{{url_for('vuoro_id', id=vuoro.id)}}">{{ vuoro.time_start }}</a></td>
+		<td>{{ vuoro.reserver }}</td>
+	</tr>
+	{% endfor %}
+    
 
   </table>
   

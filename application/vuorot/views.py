@@ -7,7 +7,6 @@ from application.vuorot.forms import SaunaForm, SaunaUpdateForm
 
 @app.route("/saunat/", methods=["GET"])
 def sauna_index():
-	saunat = Sauna.query.all()
 
 	return render_template("saunat/saunat.html", saunat=Sauna.query.all())
 
@@ -59,4 +58,9 @@ def sauna_updateInfo(id):
 	db.session().commit()
 
 	return redirect(url_for("sauna_id", id=id))
+
+@app.route("/saunat/<id>/kalenteri", methods=["GET"])
+@login_required
+def sauna_kalenteri(id):
+    return render_template("saunat/calendar.html")
 
