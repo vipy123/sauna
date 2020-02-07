@@ -1,6 +1,6 @@
 from application import app, db
 from flask import render_template, request, url_for, escape, redirect
-from flask_login import login_user
+from flask_login import login_user, logout_user
 from application.auth.models import Kayttaja
 from application.auth.forms import LoginForm
 
@@ -19,5 +19,7 @@ def auth_login():
 
 	return redirect(url_for("sauna_index"))
 
-
-
+@app.route("/auth/logout")
+def auth_logout():
+	logout_user()
+	return redirect(url_for("index"))

@@ -13,9 +13,14 @@
     </tr>
 
   </table>
+  
   <form method="GET" action="{{ url_for('sauna_update', id=sauna.id) }}">
     <input type="submit" value="Muuta tietoja"/>
   </form>
-    
+  <tr>
+    <script type="text/javascript">
+		var calendar = $('#calendar').calendar({language: 'xx-XX'});
+	</script>
+  </tr>
       
 {% endblock %}
