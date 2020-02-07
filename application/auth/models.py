@@ -1,4 +1,5 @@
 from application import db
+from application.vuorot import models
 
 class Kayttaja(db.Model):
 	__tablename__="kayttaja"
@@ -11,6 +12,9 @@ class Kayttaja(db.Model):
 	address = db.Column(db.String(200), nullable=True)
 	password = db.Column(db.String(144), nullable=False)
 	phonenumber = db.Column(db.String(20))
+	vuorot = db.relationship("Vuoro", backref='reserver', lazy=True)
+	saunat = db.relationship("Sauna", backref= 'admin', lazy=True)
+
 
 	def __init__(self, name):
 		self.username = username
