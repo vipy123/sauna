@@ -1,40 +1,44 @@
 {% extends "layout.html" %}
 
- 
+
 {% block body %}
-  <table>
-    <tr>
-      <th>{{sauna.name}}</th>
+<table>
+	<tr>
+		<th>Saunan nimi: {{sauna.name}}</th>
 
-    </tr>
+	</tr>
 
-    <tr>
-      <td>{{sauna.address}}</td>
-    </tr>
-    <tr>
-      <td>{{sauna.admin}}</td>
-    </tr>
-    <tr>
-      <a href="{{url_for('sauna_kalenteri', id=sauna.id)}}">Varauskalenteri</a>
-    </tr>
-    {% for vuoro in vuorot %}
-    	<tr>
+	<tr>
+		<td>Osoite: {{sauna.address}}</td>
+	</tr>
+	<tr>
+		<td>Yhteyshenkilö: {{sauna.admin}}</td>
+	</tr>
+	<tr>
+		<td>Luontipäivämäärä: {{sauna.date_created}}</td>
+	</tr>
+	<tr>
+		<td>Tänään: {{timen}}</td>
+	</tr>
+	<tr>
+		<a href="{{url_for('new_vuoro', id=sauna.id)}}">Tee varaus</a>
+	</tr>
+	<tr>
+		<td>Vuorot:</td>
+	</tr>
+	{% for vuoro in vuorot %}
+	<tr>
 		<td>{{ vuoro.id }}</td>
 		<td><a href="{{url_for('vuoro_id', id=vuoro.id)}}">{{ vuoro.time_start }}</a></td>
-		<td>{{ vuoro.reserver }}</td>
+		<td>{{ vuoro.reserver_id }}</td>
 	</tr>
 	{% endfor %}
-    
 
-  </table>
-  
-  <form method="GET" action="{{ url_for('sauna_update', id=sauna.id) }}">
-    <input type="submit" value="Muuta tietoja"/>
-  </form>
-  <tr>
-    <script type="text/javascript">
-		var calendar = $('#calendar').calendar({language: 'xx-XX'});
-	</script>
-  </tr>
-      
+
+</table>
+
+<form method="GET" action="{{ url_for('sauna_update', id=sauna.id) }}">
+	<input type="submit" value="Muuta tietoja" />
+</form>
+
 {% endblock %}

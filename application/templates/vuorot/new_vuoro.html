@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+  
+{% block body %}
+<form method="POST" action="{{ url_for('add_new_vuoro', id=id)}}">
+	<table>
+		<tr>
+			<td>
+				{{ form.datef.label }}
+			</td>
+			<td>
+				{{ form.datef }}
+			</td>
+			<td>
+		</tr>
+		<tr>
+			<td>
+				{{ form.timestartf.label }}
+			</td>
+			<td>
+				{{ form.timestartf }}
+			</td>
+			<td>
+		</tr>
+		<tr>
+			<td>
+				{{ form.timeendf.label }}
+			</td>
+			<td>
+				{{ form.timeendf }}
+			</td>
+			<td>
+		</tr>
+		<tr>
+			<tr>
+				<td>
+					{{ form.varattu.label }}
+				</td>
+				<td>
+					{{ form.varattu }}
+				</td>
+				<td>
+			</tr>
+			<tr>
+			<td colspan="2">
+				<input type="submit" value="Varaa vuoro"/>
+			</td>
+		</tr>
+</form>
+{% endblock %}

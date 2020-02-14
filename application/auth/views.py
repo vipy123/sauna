@@ -23,3 +23,8 @@ def auth_login():
 def auth_logout():
 	logout_user()
 	return redirect(url_for("index"))
+
+@app.route("/auth/register", methods=["GET", "POST"])
+def auth_register():
+	if request.method == "GET":
+		return render_template("auth/signup.html", form = SigUpForm)

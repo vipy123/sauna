@@ -1,9 +1,10 @@
 from application import app, db
 from flask import render_template, request, url_for, escape, redirect
 from flask_login import login_required, current_user
+import datetime
 
-from application.vuorot.models import Sauna
-from application.vuorot.forms import SaunaForm, SaunaUpdateForm
+from application.vuorot.models import Sauna, Vuoro
+from application.vuorot.forms import SaunaForm, SaunaUpdateForm, VuoroForm
 
 @app.route("/saunat/", methods=["GET"])
 def sauna_index():
@@ -32,8 +33,9 @@ def tallenna_sauna():
 @app.route("/saunat/<id>", methods=["GET"])
 def sauna_id(id):
 	sauna = Sauna.query.get(id)
-	
-	return render_template("saunat/sauna.html", sauna=sauna)
+	timen = datetime.datetime.now(datetime.timezone.utc)
+	print(f'VARATUT VUOROT: {sauna.vuorot}')
+	return render_template("saunat/sauna.html", sauna=sauna, vuorot=sauna.vuorot, timen=timen)
 
 
 @app.route("/saunat/<id>/update", methods=["GET"])
@@ -59,8 +61,39 @@ def sauna_updateInfo(id):
 
 	return redirect(url_for("sauna_id", id=id))
 
-@app.route("/saunat/<id>/kalenteri", methods=["GET"])
+@app.route("/saunat/delete/<id>", methods=["POST"])
 @login_required
-def sauna_kalenteri(id):
-    return render_template("saunat/calendar.html")
+def sauna_delete(id):
+    sauna = Sauna.query.get(id)
+    db.session.delete(sauna)
+    db.session.commit()
 
+    return redirect(url_for("sauna_index"))
+
+@app.route("/saunat/<id>/newvuoro", methods=["GET"])
+@login_required
+def new_vuoro(id):
+	return render_template("vuorot/new_vuoro.html", form=VuoroForm())
+
+@app.route("/saunat/<id>/newvuoro", methods=["POST"])
+@login_required
+def add_new_vuoro(id):
+	form = VuoroForm(request.form)
+	
+	reserver_id=current_user.id
+	sauna_id=id
+	dates = datetime.datetime.strptime("03.03.2020", '%d.%m.%Y')
+	datee = datetime.datetime.strptime("03.03.2020", '%d.%m.%Y')
+	#time_start=request.form.get(datetime("datef", "timestartf"))
+	#time_end=request.form.get(datetime("datef", "timeendf"))
+	var =request.form.get("varattu")
+	v = Vuoro(reserver_id, sauna_id, dates, datee, var)
+	db.session().add(v)
+	db.session().commit()
+	return redirect(url_for("sauna_index"))
+
+@app.route("/vuorot/<id>", methods=["GET"])
+@login_required
+def vuoro_id(id):
+	vuoro = Vuoro.query.get(id)
+	return render_template("vuorot/vuoro.html", vuoro=vuoro)
