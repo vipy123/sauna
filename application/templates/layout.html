@@ -18,10 +18,7 @@
             <a class="nav-link" href="{{ url_for('sauna_index') }}">Saunat <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="">Link</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link disabled" href="#">Disabled</a>
+            <a class="nav-link" href="{{ url_for('sauna_form') }}">Lisää sauna</a>
           </li>
         </ul>
         <div class="form-inline mt-2 mt-md-0">
@@ -38,7 +35,6 @@
     <main role="main" class="container">
       {% block body %}
       <th>Tervetuloa saunaan!</th>
-      <p>Tähän tuodaan sisältö muualta.</p>
       {% endblock %}
     </main>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
