@@ -6,27 +6,27 @@
 	<table>
 		<tr>
 			<td>
-				{{ form.name.label }}
+				{{ form.date.label }}
 			</td>
 			<td>
-				{{ form.name }}
+				{{ form.date }}
 			</td>
 		</tr>
 		<tr>
 			<td>
-				{{ form.address.label }}
+				{{ form.time_start.label }}
 			</td>
 			<td>
-				{{ form.address }}
+				{{ form.time_start }}
 			</td>
 		</tr>
 		<tr>
 			<td colspan="2">
-				<input type="submit" value="Tallenna saunan tiedot"/>
+				<input type="submit" value="Muuta varausta"/>
 			</td>
 		</tr>
 </form>
-<form method="POST" action="{{ url_for('sauna_delete', id=sauna.id) }}">
+<form method="POST" action="{{ url_for('vuoro_delete', id=vuoro.id) }}">
 		<tr>
 			<td colspan="2">
 				<input type="submit" value="Poista sauna"/>

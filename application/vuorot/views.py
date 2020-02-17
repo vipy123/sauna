@@ -1,7 +1,10 @@
 from application import app, db
 from flask import render_template, request, url_for, escape, redirect
-from flask_login import login_required, current_user
+from flask_login import current_user
+from application import login_required
 import datetime
+from datetime import timedelta
+import calendar
 
 from application.vuorot.models import Sauna, Vuoro
 from application.vuorot.forms import SaunaForm, SaunaUpdateForm, VuoroForm
@@ -12,12 +15,12 @@ def sauna_index():
 	return render_template("saunat/saunat.html", saunat=Sauna.query.all())
 
 @app.route("/saunat/new/")
-@login_required
+@login_required(role="ADMIN")
 def sauna_form():
 	return render_template("saunat/new.html", form = SaunaForm())
 
 @app.route("/saunat/new/", methods=["POST"])
-@login_required
+@login_required(role="ADMIN")
 def tallenna_sauna():
 	form = SaunaForm(request.form)
 	if not form.validate():
@@ -33,7 +36,7 @@ def tallenna_sauna():
 @app.route("/saunat/<id>", methods=["GET"])
 def sauna_id(id):
 	sauna = Sauna.query.get(id)
-	timen = datetime.datetime.now(datetime.timezone.utc)
+	timen = datetime.datetime.now(datetime.timezone(timedelta(hours=2)))
 	print(f'VARATUT VUOROT: {sauna.vuorot}')
 	return render_template("saunat/sauna.html", sauna=sauna, vuorot=sauna.vuorot, timen=timen)
 
@@ -42,11 +45,15 @@ def sauna_id(id):
 @login_required
 def sauna_update(id):
 	s = Sauna.query.get(id)
-	form = SaunaUpdateForm()
-	form.name.data=s.name
-	form.address.data = s.address
+	if s.admin_id == current_user.id:
+		form = SaunaUpdateForm()
+		form.name.data=s.name
+		form.address.data = s.address
 
-	return render_template("saunat/updateSauna.html", form=form, sauna=s)
+		return render_template("saunat/updateSauna.html", form=form, sauna=s)
+
+	else:
+		return redirect(url_for("sauna_id"), id=id)
 
 @app.route("/saunat/<id>/update", methods=["POST"])
 @login_required
@@ -73,7 +80,7 @@ def sauna_delete(id):
 @app.route("/saunat/<id>/newvuoro", methods=["GET"])
 @login_required
 def new_vuoro(id):
-	return render_template("vuorot/new_vuoro.html", form=VuoroForm())
+	return render_template("vuorot/new_vuoro.html", form=VuoroForm(), id=id)
 
 @app.route("/saunat/<id>/newvuoro", methods=["POST"])
 @login_required
@@ -82,12 +89,11 @@ def add_new_vuoro(id):
 	
 	reserver_id=current_user.id
 	sauna_id=id
-	dates = datetime.datetime.strptime("03.03.2020", '%d.%m.%Y')
-	datee = datetime.datetime.strptime("03.03.2020", '%d.%m.%Y')
-	#time_start=request.form.get(datetime("datef", "timestartf"))
-	#time_end=request.form.get(datetime("datef", "timeendf"))
-	var =request.form.get("varattu")
-	v = Vuoro(reserver_id, sauna_id, dates, datee, var)
+	date = form.datef.data
+	time_start = form.timestartf.data
+	time_end= form.timeendf.data
+	var = form.varattu.data
+	v = Vuoro(reserver_id, sauna_id, date, time_start, time_end, var)
 	db.session().add(v)
 	db.session().commit()
 	return redirect(url_for("sauna_index"))
