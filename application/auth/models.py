@@ -16,13 +16,16 @@ class Kayttaja(db.Model):
     phonenumber = db.Column(db.String(20))
     vuorot = db.relationship("Vuoro", backref='reserver', lazy=True)
     saunat = db.relationship("SaunaKayttaja", backref='admin', lazy=True)
+    roles = db.Column(db.String(10), nullable=False)
 
-    def __init__(self, username, name, phonenumber, address, password):
+
+    def __init__(self, username, name, phonenumber, address, password, roles):
         self.username = username
         self.name = name
         self.phonenumber = phonenumber
         self.address = address
         self.password = password
+        self.roles = roles
 
     def get_id(self):
         return self.id
@@ -37,7 +40,7 @@ class Kayttaja(db.Model):
         return True
 
     def roles(self):
-        return ["ADMIN"]
+        return roles
 
 class SaunaKayttaja(db.Model):
 	id = db.Column(db.Integer, primary_key=True)

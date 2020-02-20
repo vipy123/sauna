@@ -18,6 +18,7 @@ class SignUpForm(FlaskForm):
     phonenumber = StringField(
         "Puhelinnumero", [validators.Length(min=2, max=20)])
     address = StringField("Osoite", [validators.Length(min=2, max=144)])
+    rolebox = BooleanField("Oletko saunan hallitsija tai isännöitsijä")
     password = PasswordField("Salasana", [
         validators.Length(min=6, max=144),
         validators.DataRequired(),

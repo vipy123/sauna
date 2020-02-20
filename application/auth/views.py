@@ -38,8 +38,13 @@ def auth_register():
         name = form.name.data
         phonenumber = form.phonenumber.data
         address = form.address.data
+        rolebox = form.rolebox.data
+        if rolebox:
+            roles = "ADMIN"
+        else:
+            roles = "USER"
         password = form.password.data
-        kayttaja = Kayttaja(username, name, phonenumber, address, password)
+        kayttaja = Kayttaja(username, name, phonenumber, address, password, roles)
         db.session().add(kayttaja)
         db.session().commit()
         return redirect(url_for("auth_login"))
