@@ -33,7 +33,7 @@ def tallenna_sauna():
 	db.session().add(s)
 	db.session().commit()
 	sauna = Sauna.query.filter_by(name=form.name.data).first()
-	stmt = text("INSERT INTO saunaKayttaja (sauna_id, kayttaja_id) VALUES(:s_id, :k_id)").params(s_id=sauna.id, k_id=current_user.id)
+	stmt = text("INSERT INTO SaunaKayttaja (kayttaja_id, sauna_id) VALUES(:k_id, :s_id)").params(k_id=current_user.id, s_id=sauna.id)
 	db.engine.execute(stmt)
 	#sauna.admins.append(current_user)
 	
@@ -43,10 +43,11 @@ def tallenna_sauna():
 
 @app.route("/saunat/<id>", methods=["GET"])
 def sauna_id(id):
+	authtext=""
 	sauna = Sauna.query.get(id)
 	timen = datetime.datetime.now(datetime.timezone(timedelta(hours=2)))
 	admins = sauna.admins
-	return render_template("saunat/sauna.html", sauna=sauna, vuorot=sauna.vuorot, timen=timen, admins=admins)
+	return render_template("saunat/sauna.html", sauna=sauna, vuorot=sauna.vuorot, timen=timen, admins=admins, authtext=authtext)
 
 
 @app.route("/saunat/<id>/update", methods=["GET"])
@@ -54,7 +55,13 @@ def sauna_id(id):
 def sauna_update(id):
 	authtext = "Vain saunan hallinnoijat voivat muokata saunan tietoja."
 	s = Sauna.query.get(id)
+	#stmt = text("SELECT kayttaja_id FROM saunaKayttaja WHERE sauna_id = :id").params(id=id)
+	""" res = db.engine.execute(stmt)
+	admins = []
+	for row in res:
+		admins.append({row[0]}) """
 	admins = s.admins
+	print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", admins)
 	id = s.id
 	
 	if current_user in admins:
@@ -67,11 +74,12 @@ def sauna_update(id):
 		return render_template("saunat/updateSauna.html", form=form, sauna=s)
 
 	else:
-		return redirect(url_for("sauna_id"), id=id)
+		return redirect(url_for("sauna_index"))
 
 @app.route("/saunat/<id>/update", methods=["POST"])
 @login_required(role="ADMIN")
 def sauna_updateInfo(id):
+	authtext =""
 	form = SaunaUpdateForm(request.form)
 	name = request.form.get("name")
 	address=request.form.get("address")
@@ -82,21 +90,21 @@ def sauna_updateInfo(id):
 	newadmin = Kayttaja.query.get(newadminid)
 	if newadminid != current_user.id:
 		#sauna.admins.append(newadmin)
-		stmt = text("INSERT INTO saunaKayttaja (sauna_id, kayttaja_id) VALUES(:s_id, :k_id)").params(s_id=sauna.id, k_id=newadminid)
+		stmt = text("INSERT INTO saunaKayttaja (kayttaja_id, sauna_id) VALUES(:k_id, :s_id)").params(k_id=newadminid, s_id=sauna.id)
 		db.engine.execute(stmt)
 
 	db.session().commit()
 
-	return redirect(url_for("sauna_id", id=id))
+	return redirect(url_for("sauna_index"))
 
 @app.route("/saunat/delete/<id>", methods=["POST"])
 @login_required
 def sauna_delete(id):
-    sauna = Sauna.query.get(id)
-    db.session.delete(sauna)
-    db.session.commit()
+	sauna = Sauna.query.get(id)
+	db.session.delete(sauna)
+	db.session.commit()
 
-    return redirect(url_for("sauna_index"))
+	return redirect(url_for("sauna_index"))
 
 @app.route("/saunat/<id>/newvuoro", methods=["GET"])
 @login_required

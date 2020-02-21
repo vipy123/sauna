@@ -48,7 +48,7 @@ class Kayttaja(db.Model):
 
 
 
-
+"""Alla oleva luokka muutettiin sivun ylälaidassa olevaksi liitostauluksi, koska halutttiin yksinkertaistaa ohjelmaa."""
 
 """ class SaunaKayttaja(db.Model):
 	id = db.Column(db.Integer, primary_key=True)

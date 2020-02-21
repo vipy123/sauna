@@ -24,7 +24,7 @@ class Sauna(db.Model):
 		res = db.engine.execute(stmt)
 		response = []
 		for row in res:
-			response.append({"Vuoro ":row[0]})
+			response.append({row[0]})
 		return response
 
 	@staticmethod
