@@ -61,7 +61,6 @@ def sauna_update(id):
 	for row in res:
 		admins.append({row[0]}) """
 	admins = s.admins
-	print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", admins)
 	id = s.id
 	
 	if current_user in admins:

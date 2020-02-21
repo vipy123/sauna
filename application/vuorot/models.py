@@ -12,7 +12,7 @@ class Sauna(db.Model):
 	address = db.Column(db.String(200), nullable=False)
 	admins = db.relationship("Kayttaja", secondary=saunaKayttaja, backref=db.backref('Sauna', lazy='dynamic'))
 	hourly_price = db.Column(db.Float)
-	vuorot = db.relationship("Vuoro", backref='sauna', lazy=True)
+	vuorot = db.relationship("Vuoro", backref='Sauna', lazy=True)
 
 	def __init__(self, name, address):
 		self.name = name
