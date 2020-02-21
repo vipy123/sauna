@@ -45,6 +45,7 @@ def auth_register():
             roles = "USER"
         password = form.password.data
         kayttaja = Kayttaja(username, name, phonenumber, address, password, roles)
+    
         db.session().add(kayttaja)
         db.session().commit()
         return redirect(url_for("auth_login"))

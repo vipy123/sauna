@@ -42,11 +42,12 @@ def login_required(_func=None, *, role="ANY"):
         return decorated_view
     return wrapper if _func is None else wrapper(_func)
 
+from application import views
 from application.vuorot import models
 from application.vuorot import views
 from application.auth import models
 from application.auth import views
-from application import views
+
 from application.auth.models import Kayttaja
 
 @login_manager.user_loader

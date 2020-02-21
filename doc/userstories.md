@@ -3,18 +3,19 @@
 * Sauna
 * Vuoro
 
-![luokkakaavio](doc/uml-model.png)
+![tietokantakaavio](doc/uml-model.png)
 
 
 ###User storyt
 
 Eri käyttäjäryhmät:
 -Isännöitsiä/huotoyhtiö/admin:
-	-voi luoda uuden saunan ja saunavuorokalenterin
+	-voi luoda uuden saunan ja saunavuoroja
 	-hallinnoida vuoroja ja nähdä, mihin aikaan saunaa pitää lämmittää
-	(-nähdä saunamaksujen liikenteen/taseen) 
+	-voi lisätä saunalle adminkäyttäjän
+	
 -peruskäyttäjä:
-	-voi etsiä saunan osoitteen perusteella
+	-voi katsella saunoja ja niiden saunavuoroja
 	-luoda tunnukset ja kirjautua palveluun
 	-varata ja perua saunavuoroja
 

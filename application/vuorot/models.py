@@ -1,5 +1,5 @@
 from application import db
-from application.auth.models import Kayttaja
+from application.auth.models import Kayttaja, saunaKayttaja
 from sqlalchemy.sql import text
 
 
@@ -10,7 +10,7 @@ class Sauna(db.Model):
 
 	name = db.Column(db.String(144), nullable=False)
 	address = db.Column(db.String(200), nullable=False)
-	admin_id = db.Column(db.Integer, db.ForeignKey('kayttaja.id'), nullable=False)
+	admins = db.relationship("Kayttaja", secondary=saunaKayttaja, backref=db.backref('Sauna', lazy='dynamic'))
 	hourly_price = db.Column(db.Float)
 	vuorot = db.relationship("Vuoro", backref='sauna', lazy=True)
 
@@ -20,13 +20,24 @@ class Sauna(db.Model):
 	
 	@staticmethod
 	def show_future_vuorot(id):
-		stmt = text("SELECT * FROM Vuoro WHERE sauna_id = id AND date > CURRENT_TIME").params(id=id)
+		stmt = text("SELECT * FROM Vuoro WHERE sauna_id = :id AND date > CURRENT_TIME").params(id=id)
 		res = db.engine.execute(stmt)
 		response = []
 		for row in res:
 			response.append({"Vuoro ":row[0]})
 		return response
 
+	@staticmethod
+	def is_sauna_admin(self, kayttajan_id):
+		stmt = text("SELECT kayttaja_id FROM saunaKayttaja WHERE sauna_id = :sid AND kayttaja_id = :kayttajan_id").params(sid=self.id, kayttajan_id=kayttajan_id)
+		res = db.engine.execute(stmt)
+		response = []
+		for row in res:
+			response.append({row[0]})
+		if kayttajan_id in response:
+			return True
+		else:
+			return False
 
 
 class Vuoro(db.Model):

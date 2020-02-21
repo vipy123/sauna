@@ -7,6 +7,7 @@ from datetime import timedelta
 import calendar
 
 from application.vuorot.models import Sauna, Vuoro
+from application.auth.models import Kayttaja, saunaKayttaja
 from application.vuorot.forms import SaunaForm, SaunaUpdateForm, VuoroForm
 
 @app.route("/saunat/", methods=["GET"])
@@ -26,9 +27,12 @@ def tallenna_sauna():
 	if not form.validate():
 		return render_template("saunat/new.html", form=form)
 	s = Sauna(form.name.data, form.address.data)
-	s.admin_id = current_user.id
-
+	
 	db.session().add(s)
+	db.session().commit()
+	sauna = Sauna.query.filter_by(name=form.name.data).first()
+	sauna.admins.append(current_user)
+	#db.session().add(saunakayttaja)
 	db.session().commit()
 	
 	return redirect("/saunat/")
@@ -37,18 +41,29 @@ def tallenna_sauna():
 def sauna_id(id):
 	sauna = Sauna.query.get(id)
 	timen = datetime.datetime.now(datetime.timezone(timedelta(hours=2)))
-	print(f'VARATUT VUOROT: {sauna.vuorot}')
-	return render_template("saunat/sauna.html", sauna=sauna, vuorot=sauna.vuorot, timen=timen)
+	admins = sauna.admins
+	return render_template("saunat/sauna.html", sauna=sauna, vuorot=sauna.vuorot, timen=timen, admins=admins)
 
 
 @app.route("/saunat/<id>/update", methods=["GET"])
-@login_required
+@login_required(role="ADMIN")
 def sauna_update(id):
+	authtext = "Vain saunan hallinnoijat voivat muokata saunan tietoja."
 	s = Sauna.query.get(id)
-	if s.admin_id == current_user.id:
+	admins = s.admins
+	#admins = saunaKayttaja.query.filter(sauna_id=s.id).all()
+	#for a in adminids
+	#admins = Kayttaja.query.filter(id=adminids).all()
+	print("!!!!!!!!!!!!!!!!!!", type(admins))
+	#onkoKayttaja = s.admins.all().filter(current_user)
+	id = s.id
+	#if s.is_sauna_admin(s, current_user.id):
+	if current_user in admins:
+		choices = [ (k.id, k.username) for k in Kayttaja.query.all() ]
 		form = SaunaUpdateForm()
 		form.name.data=s.name
 		form.address.data = s.address
+		form.newadmin.choices = choices
 
 		return render_template("saunat/updateSauna.html", form=form, sauna=s)
 
@@ -56,7 +71,7 @@ def sauna_update(id):
 		return redirect(url_for("sauna_id"), id=id)
 
 @app.route("/saunat/<id>/update", methods=["POST"])
-@login_required
+@login_required(role="ADMIN")
 def sauna_updateInfo(id):
 	form = SaunaUpdateForm(request.form)
 	name = request.form.get("name")
@@ -64,6 +79,11 @@ def sauna_updateInfo(id):
 	sauna = Sauna.query.get(id)
 	sauna.name = name
 	sauna.address = address
+	newadminid = form.newadmin.data
+	newadmin = Kayttaja.query.get(newadminid)
+	if newadminid != current_user.id:
+		sauna.admins.append(newadmin)
+
 	db.session().commit()
 
 	return redirect(url_for("sauna_id", id=id))

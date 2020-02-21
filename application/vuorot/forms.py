@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, validators, DateField, TimeField, BooleanField
+from wtforms import StringField, validators, DateField, TimeField, BooleanField, SelectField
 from application.vuorot.models import Sauna
 
 class SaunaForm(FlaskForm):
@@ -12,6 +12,7 @@ class SaunaUpdateForm(FlaskForm):
 	
 	name = StringField("Saunan nimi", [validators.Length(min=2, max=144)])
 	address = StringField("Saunan osoite", [validators.Length(min=5, max=144)])
+	newadmin = SelectField("Lisää uusi hallinnoija saunalle (nimi)")
 	class Meta:
 		csrf = False
 		

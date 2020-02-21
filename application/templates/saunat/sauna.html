@@ -12,7 +12,10 @@
 		<td>Osoite: {{sauna.address}}</td>
 	</tr>
 	<tr>
-		<td>Yhteyshenkilö: {{sauna.admin}}</td>
+		<td>Yhteyshenkilöt: </td>
+		{% for kayttaja in admins %}
+		<td>{{kayttaja.username}}</td>
+		{% endfor %}
 	</tr>
 	<tr>
 		<td>Luontipäivämäärä: {{sauna.date_created}}</td>
