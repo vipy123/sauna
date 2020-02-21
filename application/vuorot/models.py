@@ -44,6 +44,7 @@ class Vuoro(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	reserver_id = db.Column(db.Integer, db.ForeignKey('kayttaja.id'), nullable=False)
 	sauna_id = db.Column(db.Integer, db.ForeignKey('sauna.id'), nullable=False)
+	sauna =db.relationship("Sauna", backref="Vuoro", lazy=True)
 	date = db.Column(db.Date, nullable=False)
 	time_start = db.Column(db.Time, nullable=False)
 	time_end = db.Column(db.Time, nullable=False)
