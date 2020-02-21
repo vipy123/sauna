@@ -10,6 +10,8 @@ from application.vuorot.models import Sauna, Vuoro
 from application.auth.models import Kayttaja, saunaKayttaja
 from application.vuorot.forms import SaunaForm, SaunaUpdateForm, VuoroForm
 
+from sqlalchemy.sql import text
+
 @app.route("/saunat/", methods=["GET"])
 def sauna_index():
 
@@ -31,8 +33,10 @@ def tallenna_sauna():
 	db.session().add(s)
 	db.session().commit()
 	sauna = Sauna.query.filter_by(name=form.name.data).first()
-	sauna.admins.append(current_user)
-	#db.session().add(saunakayttaja)
+	stmt = text("INSERT INTO saunaKayttaja (sauna_id, kayttaja_id) VALUES(:s_id, :k_id)").params(s_id=sauna.id, k_id=current_user.id)
+	db.engine.execute(stmt)
+	#sauna.admins.append(current_user)
+	
 	db.session().commit()
 	
 	return redirect("/saunat/")
@@ -51,13 +55,8 @@ def sauna_update(id):
 	authtext = "Vain saunan hallinnoijat voivat muokata saunan tietoja."
 	s = Sauna.query.get(id)
 	admins = s.admins
-	#admins = saunaKayttaja.query.filter(sauna_id=s.id).all()
-	#for a in adminids
-	#admins = Kayttaja.query.filter(id=adminids).all()
-	print("!!!!!!!!!!!!!!!!!!", type(admins))
-	#onkoKayttaja = s.admins.all().filter(current_user)
 	id = s.id
-	#if s.is_sauna_admin(s, current_user.id):
+	
 	if current_user in admins:
 		choices = [ (k.id, k.username) for k in Kayttaja.query.all() ]
 		form = SaunaUpdateForm()
@@ -82,7 +81,9 @@ def sauna_updateInfo(id):
 	newadminid = form.newadmin.data
 	newadmin = Kayttaja.query.get(newadminid)
 	if newadminid != current_user.id:
-		sauna.admins.append(newadmin)
+		#sauna.admins.append(newadmin)
+		stmt = text("INSERT INTO saunaKayttaja (sauna_id, kayttaja_id) VALUES(:s_id, :k_id)").params(s_id=sauna.id, k_id=newadminid)
+		db.engine.execute(stmt)
 
 	db.session().commit()
 

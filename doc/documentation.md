@@ -44,6 +44,7 @@ Eri käyttäjäryhmät:
 * Yksittäisen vuoron tietoja ei vielä pysty katselemaan ja muuttamaan
 * Yhteenvetokyselyä ei vielä toteutettu
 * Saunalle ei vielä pysty asesttamaan hintaa eikä hintoja näy
+* Ohjelmalla on turhia dependancyja
 
 ## Sovelluksen paikallinen asennusohje
 * Mene [Tänne](https://github.com/vipy123/sauna) eli repositorion pääkansioon ja lataa ohjelma zippinä kohdasta "Clone or download"
