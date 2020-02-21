@@ -5,6 +5,7 @@
 * Sauna
 * Vuoro
 
+
 ## Tietokantakaavio
 ![tietokantakaavio](uml-model.png)
 
@@ -26,7 +27,9 @@ Eri käyttäjäryhmät:
 
 ![user-story-kaavio](User-story-Diagram.png)
 
+
 ## Ohjeet ohjelman käyttöön
+
 * Luo itsellesi uudet tunnukset "Rekisteröidy"-linkin takana olevalla lomakkeella. Vaihtoehtoisesti voit käyttää tunnuksia: käyttäjätunnus: "admin", salasana: "password"
 * Jos haluat hallinnoida saunoja valitse "Isännöitsijä / saunan hallitsija"-valintaboksi 
 * Selaa saunoja "Saunat"-sivulla
@@ -35,8 +38,11 @@ Eri käyttäjäryhmät:
 * Voit muokata saunan tietoja, jos olet luonut saunan tai olet saunan lisätty admin. Tällöin sinulla tulee olla rekisteröityessäsi valittu "Isännöitsijä"-valintaboksi.
 * Voit lisätä saunalle myös uuden adminin "Muuta tietoja"-kohdassa, jos olet kyseisen saunan admin.
 
+
 ## Puutteet ja rajoitteet
+
 * Yksittäisen vuoron tietoja ei vielä pysty katselemaan ja muuttamaan
+* Yhteenvetokyselyä ei vielä toteutettu
 * Saunalle ei vielä pysty asesttamaan hintaa eikä hintoja näy
 
 ## Sovelluksen paikallinen asennusohje
@@ -46,6 +52,7 @@ Eri käyttäjäryhmät:
 * Tämän jälkeen voit käynnistää ohjelman terminalissa käskyllä "python run.py"
 * Voit käyttää ohjelmaa normaalisti selaimessa, osoitteessa: [127.0.0.1:5000/](127.0.0.1:5000/)
 * Jos haluat hallinnoida tietokantaa erillisesti, voit paikallisesti hallinnoida sqlite3-kantaa SQL-kielellä terminalissa käskyllä sqlite3 application/vuorot.db
+
 
 ## Tietokannan rakenne
 Tietokannat luodaan ohjelman sqlalchemyn tarjomalla toiminnallisuudella automaattisesti. Luotaessa käytetään seuraavia SQL-käskyjä:
