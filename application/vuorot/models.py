@@ -49,7 +49,7 @@ class Vuoro(db.Model):
 	time_start = db.Column(db.Time, nullable=False)
 	time_end = db.Column(db.Time, nullable=False)
 	varattu = db.Column(db.Boolean)
-	price = db.Column(db.Float((time_end - time_start)*2))
+	price = db.Column(db.Numeric((time_end - time_start)*2))
 	def __init__(self, reserver_id, sauna_id, date,  time_start, time_end, varattu):
 		self.reserver_id = reserver_id
 		self.sauna_id = sauna_id
