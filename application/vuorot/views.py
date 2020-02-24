@@ -28,7 +28,7 @@ def tallenna_sauna():
 	form = SaunaForm(request.form)
 	if not form.validate():
 		return render_template("saunat/new.html", form=form)
-	s = Sauna(form.name.data, form.address.data)
+	sauna = Sauna(form.name.data, form.address.data)
 	
 	db.session().add(s)
 	db.session().commit()
@@ -39,7 +39,7 @@ def tallenna_sauna():
 	
 	db.session().commit()
 	
-	return redirect("/saunat/")
+	return redirect(url_for("sauna_index"))
 
 @app.route("/saunat/<id>", methods=["GET"])
 def sauna_id(id):
@@ -54,23 +54,23 @@ def sauna_id(id):
 @login_required(role="ADMIN")
 def sauna_update(id):
 	authtext = "Vain saunan hallinnoijat voivat muokata saunan tietoja."
-	s = Sauna.query.get(id)
+	sauna = Sauna.query.get(id)
 	#stmt = text("SELECT kayttaja_id FROM saunaKayttaja WHERE sauna_id = :id").params(id=id)
 	""" res = db.engine.execute(stmt)
 	admins = []
 	for row in res:
 		admins.append({row[0]}) """
-	admins = s.admins
-	id = s.id
+	admins = sauna.admins
+	id = sauna.id
 	
 	if current_user in admins:
 		choices = [ (k.id, k.username) for k in Kayttaja.query.all() ]
 		form = SaunaUpdateForm()
-		form.name.data=s.name
-		form.address.data = s.address
+		form.name.data=sauna.name
+		form.address.data = sauna.address
 		form.newadmin.choices = choices
 
-		return render_template("saunat/updateSauna.html", form=form, sauna=s)
+		return render_template("saunat/updateSauna.html", form=form, sauna=sauna)
 
 	else:
 		return redirect(url_for("sauna_index"))

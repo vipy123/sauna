@@ -10,7 +10,7 @@ class Sauna(db.Model):
 
 	name = db.Column(db.String(144), nullable=False)
 	address = db.Column(db.String(200), nullable=False)
-	admins = db.relationship("Kayttaja", secondary=saunaKayttaja, backref=db.backref('Sauna', lazy='dynamic'))
+	admins = db.relationship("Kayttaja", secondary=saunaKayttaja, backref=db.backref('Sauna', lazy=True))
 	#hourly_price = db.Column(db.Float)
 	vuorot = db.relationship("Vuoro", backref='Sauna', lazy=True)
 
