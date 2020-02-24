@@ -55,7 +55,8 @@ def load_user(kayttaja_id):
     return Kayttaja.query.get(kayttaja_id)
 
 
-try:
-    db.create_all()
-except:
-    pass
+
+db.create_all()
+#try:
+#except:
+#    pass
