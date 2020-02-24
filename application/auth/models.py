@@ -1,6 +1,7 @@
 from application import db
-
+from sqlalchemy.sql import text
 from sqlalchemy.orm import relationship, backref
+from flask_login import current_user
 
 saunaKayttaja = db.Table('SaunaKayttaja', 
 		db.Column('kayttaja_id', db.Integer, db.ForeignKey('kayttaja.id')),
@@ -46,6 +47,21 @@ class Kayttaja(db.Model):
 	def roles(self):
 		return roles
 
+	@staticmethod
+	def saunat_joihin_varauksia(k_id):
+		stmt = text('SELECT DISTINCT name FROM Sauna LEFT JOIN Vuoro ON Sauna.id = Vuoro.sauna_id WHERE Vuoro.reserver_id = :kid').params(kid = k_id)
+		countstmt = text('SELECT COUNT(DISTINCT name) FROM Sauna LEFT JOIN Vuoro ON Sauna.id = Vuoro.sauna_id WHERE Vuoro.reserver_id = :kid').params(kid = k_id)
+		count = db.engine.execute(countstmt)
+		res = db.engine.execute(stmt)
+		response = []
+		count2= []
+		for row in res:
+			response.append(row[0])
+		for row in count:
+			count2.append(row[0])
+
+		return 'Hei ', current_user.name, '! Sinulla on varauksia ', count2[0], ' saunaan: ', response
+		
 
 
 """Alla oleva luokka muutettiin sivun ylälaidassa olevaksi liitostauluksi, koska halutttiin yksinkertaistaa ohjelmaa."""

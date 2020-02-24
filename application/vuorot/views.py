@@ -130,4 +130,38 @@ def add_new_vuoro(id):
 @login_required
 def vuoro_id(id):
 	vuoro = Vuoro.query.get(id)
-	return render_template("vuorot/vuoro.html", vuoro=vuoro)
+	form = VuoroForm(request.form)
+	
+	reserver_id=current_user.id
+	sauna_id=id
+	form.datef.data = vuoro.date
+	form.timestartf.data = vuoro.time_start
+	form.timeendf.data = vuoro.time_end
+	form.varattu.data = vuoro.varattu
+	return render_template("vuorot/vuoro.html", vuoro=vuoro, form=form)
+
+@app.route("/vuorot/<id>", methods=["POST"])
+@login_required
+def vuoro_update(id):
+	vuoro = Vuoro.query.get(id)
+	form = VuoroForm(request.form)
+	
+	reserver_id=current_user.id
+	sauna_id=id
+	vuoro.date= form.datef.data
+	vuoro.time_start = form.timestartf.data
+	vuoro.time_end = form.timeendf.data
+	vuoro.varattu = form.varattu.data
+	
+	db.session().commit()
+	sauna = Sauna.query.get(vuoro.sauna_id)
+	return redirect(url_for("sauna_id", id=sauna.id))
+
+@app.route("/vuorot/<id>/delete", methods=["POST"])
+@login_required
+def vuoro_delete(id):
+	vuoro = Vuoro.query.get(id)
+	sauna_id = vuoro.sauna_id
+	db.session.delete(vuoro)
+	db.session.commit()
+	return redirect(url_for("sauna_id", id=sauna_id))

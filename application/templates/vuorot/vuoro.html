@@ -6,20 +6,39 @@
 	<table>
 		<tr>
 			<td>
-				{{ form.date.label }}
+				{{ form.datef.label }}
 			</td>
 			<td>
-				{{ form.date }}
+				{{ form.datef }}
 			</td>
 		</tr>
 		<tr>
 			<td>
-				{{ form.time_start.label }}
+				{{ form.timestartf.label }}
 			</td>
 			<td>
-				{{ form.time_start }}
+				{{ form.timestartf }}
 			</td>
 		</tr>
+		<tr>
+			<td>
+				{{ form.timeendf.label }}
+			</td>
+			<td>
+				{{ form.timeendf }}
+			</td>
+			<td>
+		</tr>
+		<tr>
+			<tr>
+				<td>
+					{{ form.varattu.label }}
+				</td>
+				<td>
+					{{ form.varattu }}
+				</td>
+				<td>
+			</tr>
 		<tr>
 			<td colspan="2">
 				<input type="submit" value="Muuta varausta"/>
@@ -29,7 +48,7 @@
 <form method="POST" action="{{ url_for('vuoro_delete', id=vuoro.id) }}">
 		<tr>
 			<td colspan="2">
-				<input type="submit" value="Poista sauna"/>
+				<input type="submit" value="Poista vuoro"/>
 			</td>
 		</tr>
 </form>

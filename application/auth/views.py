@@ -1,9 +1,11 @@
 from application import app, db
 from flask import render_template, request, url_for, escape, redirect
-from flask_login import login_user, logout_user
+from flask_login import login_user, logout_user, current_user
 from application.auth.models import Kayttaja
+from application.vuorot.models import Sauna, Vuoro
 from application.auth.forms import LoginForm, SignUpForm
 from application import app, db, login_required
+
 
 @app.route("/auth/login", methods=["GET", "POST"])
 def auth_login():
@@ -49,3 +51,9 @@ def auth_register():
         db.session().add(kayttaja)
         db.session().commit()
         return redirect(url_for("auth_login"))
+
+@app.route("/auth/kayttaja/<id>", methods=["GET"])
+@login_required()
+def auth_kayttaja(id):
+    yhteenveto_kayttajan_saunoista = current_user.saunat_joihin_varauksia(current_user.id)
+    return render_template("auth/kayttaja.html", yhteenveto_kayttajan_saunoista=yhteenveto_kayttajan_saunoista)
