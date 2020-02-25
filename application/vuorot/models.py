@@ -1,18 +1,20 @@
 from application import db
 from application.auth.models import Kayttaja, saunaadmin
 from sqlalchemy.sql import text
+from sqlalchemy.orm import relationship, backref, back_populates
 
 
 class Sauna(db.Model):
+	__tablename__="sauna"
 	id = db.Column(db.Integer, primary_key=True)
 	date_created = db.Column(db.Date)
 	date_current = db.Column(db.Date, default=db.func.current_timestamp())
 
 	name = db.Column(db.String(144), nullable=False)
 	address = db.Column(db.String(200), nullable=False)
-	admins = db.relationship("Kayttaja", secondary=saunaadmin, backref=db.backref('Sauna', lazy=True))
+	admins = db.relationship("Kayttaja", secondary=saunaadmin, back_populates='saunat')
 	#hourly_price = db.Column(db.Float)
-	vuorot = db.relationship("Vuoro", backref='Sauna', lazy=True)
+	vuorot = db.relationship("vuoro", backref='sauna', lazy=True)
 
 	def __init__(self, name, address):
 		self.name = name
@@ -20,7 +22,7 @@ class Sauna(db.Model):
 	
 	@staticmethod
 	def show_future_vuorot(id):
-		stmt = text("SELECT * FROM Vuoro WHERE sauna_id = :id AND date > CURRENT_TIME").params(id=id)
+		stmt = text("SELECT * FROM vuoro WHERE sauna_id = :id AND date > CURRENT_TIME").params(id=id)
 		res = db.engine.execute(stmt)
 		response = []
 		for row in res:
@@ -41,10 +43,12 @@ class Sauna(db.Model):
 
 
 class Vuoro(db.Model):
+	__tablename__="vuoro"
 	id = db.Column(db.Integer, primary_key=True)
-	kayttaja_id = db.Column(db.Integer, db.ForeignKey("Kayttaja.id"), nullable=False)
-	sauna_id = db.Column(db.Integer, db.ForeignKey("Sauna.id"), nullable=False)
-	sauna =db.relationship("Sauna", backref="Vuoro", lazy=True)
+	reserver_id = db.Column(db.Integer, db.ForeignKey("kayttaja.id"), nullable=False)
+	reserver = db.relationship("Kayttaja", backref="vuorot")
+	sauna_id = db.Column(db.Integer, db.ForeignKey("sauna.id"), nullable=False)
+	#sauna = db.relationship("Sauna", backref="vuorot", lazy=True)
 	date = db.Column(db.Date, nullable=False)
 	time_start = db.Column(db.Time, nullable=False)
 	time_end = db.Column(db.Time, nullable=False)

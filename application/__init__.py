@@ -42,13 +42,14 @@ def login_required(_func=None, *, role="ANY"):
         return decorated_view
     return wrapper if _func is None else wrapper(_func)
 
-from application import views
-from application.auth import models
-from application.auth import views
+
+
 from application.vuorot import models
+
+from application.auth import models
+from application import views
+from application.auth import views
 from application.vuorot import views
-
-
 
 from application.auth.models import Kayttaja
 
@@ -56,8 +57,8 @@ from application.auth.models import Kayttaja
 def load_user(kayttaja_id):
     return Kayttaja.query.get(kayttaja_id)
 
-
-try:
-    db.create_all()
-except:
-    pass
+db.create_all()
+#try:
+    
+#except:
+#    pass
