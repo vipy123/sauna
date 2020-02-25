@@ -7,7 +7,7 @@ from datetime import timedelta
 import calendar
 
 from application.vuorot.models import Sauna, Vuoro
-from application.auth.models import Kayttaja, saunaKayttaja
+from application.auth.models import Kayttaja, saunaadmin
 from application.vuorot.forms import SaunaForm, SaunaUpdateForm, VuoroForm
 
 from sqlalchemy.sql import text
@@ -33,7 +33,7 @@ def tallenna_sauna():
 	db.session().add(s)
 	db.session().commit()
 	sauna = Sauna.query.filter_by(name=form.name.data).first()
-	stmt = text("INSERT INTO SaunaKayttaja (kayttaja_id, sauna_id) VALUES(:k_id, :s_id)").params(k_id=current_user.id, s_id=sauna.id)
+	stmt = text("INSERT INTO saunaadmin (kayttaja_id, sauna_id) VALUES(:k_id, :s_id)").params(k_id=current_user.id, s_id=sauna.id)
 	db.engine.execute(stmt)
 	#sauna.admins.append(current_user)
 	
@@ -55,7 +55,7 @@ def sauna_id(id):
 def sauna_update(id):
 	authtext = "Vain saunan hallinnoijat voivat muokata saunan tietoja."
 	sauna = Sauna.query.get(id)
-	#stmt = text("SELECT kayttaja_id FROM saunaKayttaja WHERE sauna_id = :id").params(id=id)
+	#stmt = text("SELECT kayttaja_id FROM saunaadmin WHERE sauna_id = :id").params(id=id)
 	""" res = db.engine.execute(stmt)
 	admins = []
 	for row in res:
@@ -89,7 +89,7 @@ def sauna_updateInfo(id):
 	newadmin = Kayttaja.query.get(newadminid)
 	if newadminid != current_user.id:
 		#sauna.admins.append(newadmin)
-		stmt = text("INSERT INTO saunaKayttaja (kayttaja_id, sauna_id) VALUES(:k_id, :s_id)").params(k_id=newadminid, s_id=sauna.id)
+		stmt = text("INSERT INTO saunaadmin (kayttaja_id, sauna_id) VALUES(:k_id, :s_id)").params(k_id=newadminid, s_id=sauna.id)
 		db.engine.execute(stmt)
 
 	db.session().commit()

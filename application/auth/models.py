@@ -3,12 +3,12 @@ from sqlalchemy.sql import text
 from sqlalchemy.orm import relationship, backref
 from flask_login import current_user
 
-saunaKayttaja = db.Table('SaunaKayttaja', 
-		db.Column('kayttaja_id', db.Integer, db.ForeignKey('kayttaja.id')),
-		db.Column('sauna_id', db.Integer, db.ForeignKey('sauna.id')))
+saunaadmin = db.Table("saunaadmin", 
+		db.Column("kayttaja_id", db.Integer, db.ForeignKey("kayttaja.id")),
+		db.Column("sauna_id", db.Integer, db.ForeignKey("sauna.id")))
 
 class Kayttaja(db.Model):
-	
+	__tablename__="kayttaja"
 	id = db.Column(db.Integer, primary_key=True)
 	date_created = db.Column(db.DateTime, default=db.func.current_timestamp())
 	date_modified = db.Column(db.DateTime, default=db.func.current_timestamp(),
@@ -19,8 +19,8 @@ class Kayttaja(db.Model):
 	password = db.Column(db.String(144), nullable=False)
 	email = db.Column(db.String(144))
 	phonenumber = db.Column(db.String(20))
-	vuorot = db.relationship("Vuoro", backref='reserver', lazy=True)
-	saunat = db.relationship("Sauna", secondary=saunaKayttaja, backref=db.backref('Kayttaja', lazy=True))
+	vuorot = db.relationship("vuoro", backref="kayttaja", lazy=True)
+	saunat = db.relationship("sauna", secondary=saunaadmin, backref=db.backref("kayttaja", lazy=True))
 	roles = db.Column(db.String(10), nullable=False)
 
 
@@ -49,8 +49,8 @@ class Kayttaja(db.Model):
 
 	@staticmethod
 	def saunat_joihin_varauksia(k_id):
-		stmt = text('SELECT DISTINCT name FROM Sauna LEFT JOIN Vuoro ON Sauna.id = Vuoro.sauna_id WHERE Vuoro.reserver_id = :kid').params(kid = k_id)
-		countstmt = text('SELECT COUNT(DISTINCT name) FROM Sauna LEFT JOIN Vuoro ON Sauna.id = Vuoro.sauna_id WHERE Vuoro.reserver_id = :kid').params(kid = k_id)
+		stmt = text('SELECT DISTINCT name FROM sauna LEFT JOIN vuoro ON sauna.id = vuoro.sauna_id WHERE vuoro.kayttaja_id = :kid').params(kid = k_id)
+		countstmt = text('SELECT COUNT(DISTINCT name) FROM sauna LEFT JOIN vuoro ON sauna.id = vuoro.sauna_id WHERE vuoro.kayttaja_id = :kid').params(kid = k_id)
 		count = db.engine.execute(countstmt)
 		res = db.engine.execute(stmt)
 		response = []
@@ -61,19 +61,3 @@ class Kayttaja(db.Model):
 			count2.append(row[0])
 
 		return 'Hei ', current_user.name, '! Sinulla on varauksia ', count2[0], ' saunaan: ', response
-		
-
-
-"""Alla oleva luokka muutettiin sivun ylälaidassa olevaksi liitostauluksi, koska halutttiin yksinkertaistaa ohjelmaa."""
-
-""" class SaunaKayttaja(db.Model):
-	id = db.Column(db.Integer, primary_key=True)
-	sauna_id = db.Column(db.Integer, db.ForeignKey('sauna.id'), nullable=False)
-	kayttaja_id = db.Column(db.Integer, db.ForeignKey('kayttaja.id'), nullable=False)
-
-	sauna = db.relationship(Sauna, backref="SaunaKayttaja")
-	kayttaja = db.relationship(Kayttaja, backref="SaunaKayttaja")
-
-	def __init__(self, sauna_id, kayttaja_id):
-		self.sauna_id = sauna_id
-		self.kayttaja_id = kayttaja_id """

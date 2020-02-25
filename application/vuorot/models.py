@@ -1,5 +1,5 @@
 from application import db
-from application.auth.models import Kayttaja, saunaKayttaja
+from application.auth.models import Kayttaja, saunaadmin
 from sqlalchemy.sql import text
 
 
@@ -10,9 +10,9 @@ class Sauna(db.Model):
 
 	name = db.Column(db.String(144), nullable=False)
 	address = db.Column(db.String(200), nullable=False)
-	admins = db.relationship("Kayttaja", secondary=saunaKayttaja, backref=db.backref('Sauna', lazy=True))
+	admins = db.relationship("kayttaja", secondary=saunaadmin, backref=db.backref('sauna', lazy=True))
 	#hourly_price = db.Column(db.Float)
-	vuorot = db.relationship("Vuoro", backref='Sauna', lazy=True)
+	vuorot = db.relationship("vuoro", backref='sauna', lazy=True)
 
 	def __init__(self, name, address):
 		self.name = name
@@ -20,7 +20,7 @@ class Sauna(db.Model):
 	
 	@staticmethod
 	def show_future_vuorot(id):
-		stmt = text("SELECT * FROM Vuoro WHERE sauna_id = :id AND date > CURRENT_TIME").params(id=id)
+		stmt = text("SELECT * FROM vuoro WHERE sauna_id = :id AND date > CURRENT_TIME").params(id=id)
 		res = db.engine.execute(stmt)
 		response = []
 		for row in res:
@@ -29,7 +29,7 @@ class Sauna(db.Model):
 
 	@staticmethod
 	def is_sauna_admin(self, kayttajan_id):
-		stmt = text("SELECT kayttaja_id FROM saunaKayttaja WHERE sauna_id = :sid AND kayttaja_id = :kayttajan_id").params(sid=self.id, kayttajan_id=kayttajan_id)
+		stmt = text("SELECT kayttaja_id FROM saunaadmin WHERE sauna_id = :sid AND kayttaja_id = :kayttajan_id").params(sid=self.id, kayttajan_id=kayttajan_id)
 		res = db.engine.execute(stmt)
 		response = []
 		for row in res:
@@ -42,9 +42,9 @@ class Sauna(db.Model):
 
 class Vuoro(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
-	reserver_id = db.Column(db.Integer, db.ForeignKey('kayttaja.id'), nullable=False)
-	sauna_id = db.Column(db.Integer, db.ForeignKey('sauna.id'), nullable=False)
-	sauna =db.relationship("Sauna", backref="Vuoro", lazy=True)
+	kayttaja_id = db.Column(db.Integer, db.ForeignKey("kayttaja.id"), nullable=False)
+	sauna_id = db.Column(db.Integer, db.ForeignKey("sauna.id"), nullable=False)
+	sauna =db.relationship("sauna", backref="vuoro", lazy=True)
 	date = db.Column(db.Date, nullable=False)
 	time_start = db.Column(db.Time, nullable=False)
 	time_end = db.Column(db.Time, nullable=False)
