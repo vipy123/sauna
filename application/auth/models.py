@@ -4,11 +4,11 @@ from sqlalchemy.orm import relationship, backref
 from flask_login import current_user
 
 saunaadmin = db.Table("saunaadmin", 
-		db.Column("kayttaja_id", db.Integer, db.ForeignKey("kayttaja.id")),
-		db.Column("sauna_id", db.Integer, db.ForeignKey("sauna.id")))
+		db.Column("kayttaja_id", db.Integer, db.ForeignKey("Kayttaja.id")),
+		db.Column("sauna_id", db.Integer, db.ForeignKey("Sauna.id")))
 
 class Kayttaja(db.Model):
-	__tablename__="kayttaja"
+	__tablename__="Kayttaja"
 	id = db.Column(db.Integer, primary_key=True)
 	date_created = db.Column(db.DateTime, default=db.func.current_timestamp())
 	date_modified = db.Column(db.DateTime, default=db.func.current_timestamp(),
@@ -19,8 +19,8 @@ class Kayttaja(db.Model):
 	password = db.Column(db.String(144), nullable=False)
 	email = db.Column(db.String(144))
 	phonenumber = db.Column(db.String(20))
-	vuorot = db.relationship("vuoro", backref="kayttaja", lazy=True)
-	saunat = db.relationship("sauna", secondary=saunaadmin, backref=db.backref("kayttaja", lazy=True))
+	vuorot = db.relationship("Vuoro", backref="Kayttaja", lazy=True)
+	saunat = db.relationship("Sauna", secondary=saunaadmin, backref=db.backref("Kayttaja", lazy=True))
 	roles = db.Column(db.String(10), nullable=False)
 
 
@@ -49,8 +49,8 @@ class Kayttaja(db.Model):
 
 	@staticmethod
 	def saunat_joihin_varauksia(k_id):
-		stmt = text('SELECT DISTINCT name FROM sauna LEFT JOIN vuoro ON sauna.id = vuoro.sauna_id WHERE vuoro.kayttaja_id = :kid').params(kid = k_id)
-		countstmt = text('SELECT COUNT(DISTINCT name) FROM sauna LEFT JOIN vuoro ON sauna.id = vuoro.sauna_id WHERE vuoro.kayttaja_id = :kid').params(kid = k_id)
+		stmt = text('SELECT DISTINCT name FROM Sauna LEFT JOIN Vuoro ON Sauna.id = Vuoro.sauna_id WHERE Vuoro.kayttaja_id = :kid').params(kid = k_id)
+		countstmt = text('SELECT COUNT(DISTINCT name) FROM Sauna LEFT JOIN Vuoro ON Sauna.id = Vuoro.sauna_id WHERE Vuoro.kayttaja_id = :kid').params(kid = k_id)
 		count = db.engine.execute(countstmt)
 		res = db.engine.execute(stmt)
 		response = []
