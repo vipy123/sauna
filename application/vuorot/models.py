@@ -1,7 +1,7 @@
 from application import db
 from application.auth.models import Kayttaja, saunaadmin
 from sqlalchemy.sql import text
-from sqlalchemy.orm import relationship, backref, back_populates
+from sqlalchemy.orm import relationship, backref
 
 
 class Sauna(db.Model):

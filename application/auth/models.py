@@ -1,6 +1,6 @@
 from application import db
 from sqlalchemy.sql import text
-from sqlalchemy.orm import relationship, backref, back_populates
+from sqlalchemy.orm import relationship, backref
 from flask_login import current_user
 
 
