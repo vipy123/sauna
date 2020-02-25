@@ -20,7 +20,7 @@ class Kayttaja(db.Model):
 	email = db.Column(db.String(144))
 	phonenumber = db.Column(db.String(20))
 	vuorot = db.relationship("Vuoro", backref="Kayttaja", lazy=True)
-	saunat = db.relationship("Sauna", secondary=saunaadmin, backref=db.backref("Kayttaja", lazy=True))
+	saunat = db.relationship("Sauna", secondary=saunaadmin, backref=db.backref("Kayttaja", lazy='dynamic'))
 	roles = db.Column(db.String(10), nullable=False)
 
 
