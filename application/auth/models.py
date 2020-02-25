@@ -4,8 +4,8 @@ from sqlalchemy.orm import relationship, backref
 from flask_login import current_user
 
 saunaadmin = db.Table("saunaadmin", 
-		db.Column("kayttaja_id", db.Integer, db.ForeignKey("Kayttaja.id")),
-		db.Column("sauna_id", db.Integer, db.ForeignKey("Sauna.id")))
+		db.Column("kayttaja_id", db.Integer, db.ForeignKey("Kayttaja.id"), primary_key=True),
+		db.Column("sauna_id", db.Integer, db.ForeignKey("Sauna.id"), primary_key=True))
 
 class Kayttaja(db.Model):
 	__tablename__="Kayttaja"
@@ -20,7 +20,7 @@ class Kayttaja(db.Model):
 	email = db.Column(db.String(144))
 	phonenumber = db.Column(db.String(20))
 	vuorot = db.relationship("Vuoro", backref="Kayttaja", lazy=True)
-	saunat = db.relationship("Sauna", secondary=saunaadmin, lazy='dynamic')
+	saunat = db.relationship("Sauna", secondary=saunaadmin, lazy='subquery', backref=db.backref('admins', lazy=True))
 	roles = db.Column(db.String(10), nullable=False)
 
 
