@@ -4,10 +4,10 @@
 <form method="POST" action="{{ url_for('add_new_vuoro', id=id)}}">
 	<table>
 		<tr>
-			<td>
+			<td type="date">
 				{{ form.datef.label }}
 			</td>
-			<td type="datetime-local">
+			<td type="date">
 				{{ form.datef }}
 			</td>
 			<td>

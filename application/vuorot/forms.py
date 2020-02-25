@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, validators, DateField, TimeField, BooleanField, SelectField
+from wtforms import StringField, validators, TimeField, BooleanField, SelectField
 from application.vuorot.models import Sauna
+from wtforms.fields.html5 import DateField
 
 class SaunaForm(FlaskForm):
 	name = StringField("Saunan nimi", [validators.Length(min=2, max=144)])
@@ -17,7 +18,7 @@ class SaunaUpdateForm(FlaskForm):
 		csrf = False
 		
 class VuoroForm(FlaskForm):
-	datef = DateField("Päivämäärä: DD.MM.YYYY", format='%d.%m.%Y')
+	datef = DateField("Päivämäärä: DD.MM.YYYY")
 	timestartf = TimeField("Aloitusaika: HH:MM", format='%H:%M')
 	timeendf = TimeField("Lopetusaika: HH:MM", format='%H:%M')
 	varattu = BooleanField("Imoitetaan varatuksi", False)

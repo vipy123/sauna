@@ -30,12 +30,12 @@ def tallenna_sauna():
 		return render_template("saunat/new.html", form=form)
 	sauna = Sauna(form.name.data, form.address.data)
 	
-	db.session().add(s)
+	db.session().add(sauna)
 	db.session().commit()
 	sauna = Sauna.query.filter_by(name=form.name.data).first()
-	stmt = text("INSERT INTO saunaadmin (kayttaja_id, sauna_id) VALUES(:k_id, :s_id)").params(k_id=current_user.id, s_id=sauna.id)
-	db.engine.execute(stmt)
-	#sauna.admins.append(current_user)
+	#stmt = text("INSERT INTO saunaadmin (kayttaja_id, sauna_id) VALUES(:k_id, :s_id)").params(k_id=current_user.id, s_id=sauna.id)
+	#db.engine.execute(stmt)
+	sauna.admins.append(current_user)
 	
 	db.session().commit()
 	

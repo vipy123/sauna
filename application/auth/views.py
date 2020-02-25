@@ -56,4 +56,5 @@ def auth_register():
 @login_required()
 def auth_kayttaja(id):
     yhteenveto_kayttajan_saunoista = current_user.saunat_joihin_varauksia(current_user.id)
-    return render_template("auth/kayttaja.html", yhteenveto_kayttajan_saunoista=yhteenveto_kayttajan_saunoista)
+    saunavarausten_maara = current_user.saunavarausten_maara(current_user.id)
+    return render_template("auth/kayttaja.html", yhteenveto_kayttajan_saunoista=yhteenveto_kayttajan_saunoista, maara = saunavarausten_maara)

@@ -14,7 +14,7 @@ class Sauna(db.Model):
 	address = db.Column(db.String(200), nullable=False)
 	admins = db.relationship("Kayttaja", secondary=saunaadmin, back_populates='saunat')
 	#hourly_price = db.Column(db.Float)
-	vuorot = db.relationship("vuoro", backref='sauna', lazy=True)
+	vuorot = db.relationship("Vuoro", backref='Sauna', lazy=True)
 
 	def __init__(self, name, address):
 		self.name = name
@@ -46,9 +46,9 @@ class Vuoro(db.Model):
 	__tablename__="vuoro"
 	id = db.Column(db.Integer, primary_key=True)
 	reserver_id = db.Column(db.Integer, db.ForeignKey("kayttaja.id"), nullable=False)
-	reserver = db.relationship("Kayttaja", backref="vuorot")
+	#reserver = db.relationship("Kayttaja", backref="Vuoro")
 	sauna_id = db.Column(db.Integer, db.ForeignKey("sauna.id"), nullable=False)
-	#sauna = db.relationship("Sauna", backref="vuorot", lazy=True)
+	sauna = db.relationship("Sauna", backref="Vuoro", lazy=True)
 	date = db.Column(db.Date, nullable=False)
 	time_start = db.Column(db.Time, nullable=False)
 	time_end = db.Column(db.Time, nullable=False)

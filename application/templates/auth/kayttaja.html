@@ -4,7 +4,7 @@
 {% block body %}
 <table>
 	<tr>
-		<th>{{yhteenveto_kayttajan_saunoista}}</th>
+		<th>Hei {{current_user.name}}! Sinulla on varauksia {{maara}} saunaan: {{yhteenveto_kayttajan_saunoista}}</th>
 	</tr>
 </table>
 {% endblock %}
