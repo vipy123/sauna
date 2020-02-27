@@ -1,12 +1,13 @@
 # sauna app
 
 Sauna appin tarkoituksena on mahdollistaa varaukset taloyhtiöiden tai saunapalveluntarjoajien saunoihin. Ohjelma sisältää kirjautumistoiminnallisuuden, saunavarausten aikataulun sekä tiedot saunoista ja saunojen osoitteista. 
-Taloyhtiöillä on käytössään oman saunansa varaukset, joita pääsee hallinnoimaan admin-tunnuksilla kirjautumalla. Kukin käyttäjä voi muokata vain omia tietojaan. Jotkin taloyhtiöt voivat kuitenkin mahdollistaa oman saunansa vuokrauksen talon ulkopuolelle.
+Taloyhtiöillä on käytössään oman saunansa varaukset, joita pääsee hallinnoimaan admin-tunnuksilla kirjautumalla. Kukin käyttäjä voi muokata vain niitä tietoja, joihin heillä on hallinnointioikeus.
 
-[Täältä löytyy dokumentaatio](doc/documentation.md) ja [täältä userstory-kaavio](doc/User-story-Diagram.png).
+[Täältä löytyy dokumentaatio](doc/documentation.md)
 
-Ohjelmaa voi käyttää tietokantaan lisätyllä käyttäjätunnuksella:
+Ohjelmaa voi käyttää esimrkiksi tietokantaan lisätyllä käyttäjätunnuksella:
 * username: "admin"
 * password: "password"
+tai omilla tunnuksilla.
 
-[Itse appi rakennetaan tänne](https://tsoha-saunavuoro-app.herokuapp.com)
+[Sauna app löytyy täältä](https://tsoha-saunavuoro-app.herokuapp.com)

@@ -57,11 +57,13 @@ def auth_register():
 def auth_kayttaja(id):
     yhteenveto_kayttajan_saunoista = current_user.saunat_joihin_varauksia(current_user.id)
     saunavarausten_maara = current_user.saunavarausten_maara(current_user.id)
-    tulotsaunoista = 0.0
+    tulotsaunoista = 0
     show= False
     if current_user.roles=='ADMIN':
         show = True
 
     tulotsaunoista = current_user.tulot_saunoista(id)
+    if tulotsaunoista == None:
+        tulotsaunoista = 0
 
     return render_template("auth/kayttaja.html", yhteenveto_kayttajan_saunoista=yhteenveto_kayttajan_saunoista, show=show, maara=saunavarausten_maara, tulot=tulotsaunoista)
