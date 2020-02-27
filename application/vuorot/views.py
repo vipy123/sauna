@@ -5,7 +5,7 @@ from application import login_required
 import datetime
 from datetime import timedelta
 import calendar
-
+from decimal import *
 from application.vuorot.models import Sauna, Vuoro
 from application.auth.models import Kayttaja, saunaadmin
 from application.vuorot.forms import SaunaForm, SaunaUpdateForm, VuoroForm
@@ -33,9 +33,6 @@ def tallenna_sauna():
 	db.session().add(sauna)
 	db.session().commit()
 	sauna = Sauna.query.filter_by(name=form.name.data).first()
-	#stmt = text("INSERT INTO saunaadmin (kayttaja_id, sauna_id) VALUES(:k_id, :s_id)").params(k_id=current_user.id, s_id=sauna.id)
-	#db.engine.execute(stmt)
-	sauna
 	sauna.admins.append(current_user)
 	
 	db.session().commit()
@@ -48,7 +45,16 @@ def sauna_id(id):
 	sauna = Sauna.query.get(id)
 	timen = datetime.datetime.now(datetime.timezone(timedelta(hours=2)))
 	admins = sauna.admins
-	return render_template("saunat/sauna.html", sauna=sauna, vuorot=sauna.vuorot, timen=timen, admins=admins, authtext=authtext)
+	sauna_past_tulot =0.0
+	
+	sauna_future_tulot =""
+	
+	if current_user in sauna.admins:
+		sauna_past_tulot =sauna.get_sauna_past_tulot(sauna)
+		sauna_future_tulot = sauna.get_sauna_future_tulot(sauna)
+
+	return render_template("saunat/sauna.html", sauna=sauna, vuorot=sauna.vuorot,
+	timen=timen, admins=admins, authtext=authtext, past_tulot=sauna_past_tulot, future_tulot = sauna_future_tulot)
 
 
 @app.route("/saunat/<id>/update", methods=["GET"])
@@ -56,11 +62,7 @@ def sauna_id(id):
 def sauna_update(id):
 	authtext = "Vain saunan hallinnoijat voivat muokata saunan tietoja."
 	sauna = Sauna.query.get(id)
-	#stmt = text("SELECT kayttaja_id FROM saunaadmin WHERE sauna_id = :id").params(id=id)
-	""" res = db.engine.execute(stmt)
-	admins = []
-	for row in res:
-		admins.append({row[0]}) """
+	
 	admins = sauna.admins
 	id = sauna.id
 	
@@ -92,12 +94,10 @@ def sauna_updateInfo(id):
 	sauna.hourly_price = form.hourly_price.data
 	if newadminid != current_user.id:
 		sauna.admins.append(newadmin)
-		#stmt = text("INSERT INTO saunaadmin (kayttaja_id, sauna_id) VALUES(:k_id, :s_id)").params(k_id=newadminid, s_id=sauna.id)
-		#db.engine.execute(stmt)
 
 	db.session().commit()
 
-	return redirect(url_for("sauna_index"))
+	return redirect(url_for("sauna_id", id = sauna.id))
 
 @app.route("/saunat/delete/<id>", methods=["POST"])
 @login_required(role="ADMIN")
@@ -118,38 +118,49 @@ def sauna_delete(id):
 	return redirect(url_for("sauna_index"))
 
 @app.route("/saunat/<id>/newvuoro", methods=["GET"])
-@login_required
+@login_required(role="ADMIN")
 def new_vuoro(id):
-	return render_template("vuorot/new_vuoro.html", form=VuoroForm(), id=id)
+	sauna = Sauna.query.get(id)
+	if current_user in sauna.admins:
+		return render_template("vuorot/new_vuoro.html", form=VuoroForm(), id=id)
+	else:
+		return redirect(url_for("sauna_id", id = sauna.id))
 
 @app.route("/saunat/<id>/newvuoro", methods=["POST"])
-@login_required
+@login_required(role="ADMIN")
 def add_new_vuoro(id):
 	form = VuoroForm(request.form)
 	
 	reserver_id=current_user.id
 	sauna_id=id
+	sauna = Sauna.query.get(id)
 	date = form.datef.data
 	time_start = form.timestartf.data
+	time_start_dt = datetime.datetime.combine(datetime.datetime(1,1,1,0,0,0), time_start)
 	time_end= form.timeendf.data
+	time_end_dt = datetime.datetime.combine(datetime.datetime(1,1,1,0,0,0), time_end)
 	var = form.varattu.data
-	v = Vuoro(reserver_id, sauna_id, date, time_start, time_end, var)
-	db.session().add(v)
+	timedelta = time_end_dt - time_start_dt
+	time_decimal = timedelta.total_seconds()/3600
+	vuoro = Vuoro(reserver_id, sauna_id, date, time_start, time_end, var)
+	vuoro.price = sauna.hourly_price * Decimal(time_decimal)
+	db.session().add(vuoro)
 	db.session().commit()
-	return redirect(url_for("sauna_index"))
+	return redirect(url_for("sauna_id", id=id))
 
 @app.route("/vuorot/<id>", methods=["GET"])
 @login_required
 def vuoro_id(id):
+	 
 	vuoro = Vuoro.query.get(id)
 	form = VuoroForm(request.form)
 	
-	reserver_id=current_user.id
 	sauna_id=id
 	form.datef.data = vuoro.date
 	form.timestartf.data = vuoro.time_start
 	form.timeendf.data = vuoro.time_end
 	form.varattu.data = vuoro.varattu
+
 	return render_template("vuorot/vuoro.html", vuoro=vuoro, form=form)
 
 @app.route("/vuorot/<id>", methods=["POST"])
@@ -164,9 +175,14 @@ def vuoro_update(id):
 	vuoro.time_start = form.timestartf.data
 	vuoro.time_end = form.timeendf.data
 	vuoro.varattu = form.varattu.data
-	
-	db.session().commit()
+	time_start_dt = datetime.datetime.combine(datetime.datetime(1,1,1,0,0,0), vuoro.time_start)
+	time_end_dt = datetime.datetime.combine(datetime.datetime(1,1,1,0,0,0), vuoro.time_end)
+	timedelta = time_end_dt - time_start_dt
+	time_decimal = timedelta.total_seconds()/3600
 	sauna = Sauna.query.get(vuoro.sauna_id)
+	vuoro.price = sauna.hourly_price * Decimal(time_decimal)
+	db.session().commit()
+	
 	return redirect(url_for("sauna_id", id=sauna.id))
 
 @app.route("/vuorot/<id>/delete", methods=["POST"])

@@ -13,7 +13,7 @@ class Sauna(db.Model):
 	name = db.Column(db.String(144), nullable=False)
 	address = db.Column(db.String(200), nullable=False)
 	admins = db.relationship("Kayttaja", secondary=saunaadmin, cascade="all,delete", back_populates='saunat')
-	hourly_price = db.Column(db.Numeric)
+	hourly_price = db.Column(db.Numeric(10,2))
 	vuorot = db.relationship("Vuoro", backref='Sauna', lazy=True)
 
 	def __init__(self, name, address):
@@ -40,27 +40,23 @@ class Sauna(db.Model):
 			return True
 		else:
 			return False
-	
 	@staticmethod
-	def get_sauna_admins(self):
-		stmt = text('SELECT * FROM saunaadmin WHERE saunaadmin.sauna_id = :s_id').params(s_id= self.id)
+	def get_sauna_past_tulot(self):
+		stmt = text("SELECT SUM(price) FROM Vuoro WHERE Vuoro.sauna_id = :s_id AND Vuoro.date < CURRENT_TIME").params(s_id = self.id)
 		res = db.engine.execute(stmt)
 		response = []
 		for row in res:
 			response.append(row[0])
-		return response
+		return response[0]
 
 	@staticmethod
-	def delete_sauna_admins(sauna_id):
-		conn = db.engine.connect()
-		stmt = saunaadmin.delete().where(saunaadmin.sauna_id == sauna_id)
-		conn.execute(stmt)
-		s = saunaadmin.select()
-		conn.execute(s).fetchall()
-		#conn.execute('DELETE FROM saunaadmin WHERE saunaadmin.sauna_id = :s_id').params(s_id=sauna_id)
-		#res = db.engine.execute(stmt)
-		#db.session.commit()
-		return
+	def get_sauna_future_tulot(self):
+		stmt = text("SELECT SUM(price) FROM Vuoro WHERE Vuoro.sauna_id = :s_id AND Vuoro.date >= CURRENT_TIME").params(s_id = self.id)
+		res = db.engine.execute(stmt)
+		response = []
+		for row in res:
+			response.append(row[0])
+		return response[0]
 
 class Vuoro(db.Model):
 	__tablename__="vuoro"
@@ -73,7 +69,7 @@ class Vuoro(db.Model):
 	time_start = db.Column(db.Time, nullable=False)
 	time_end = db.Column(db.Time, nullable=False)
 	varattu = db.Column(db.Boolean)
-	price = db.Column(db.Numeric)
+	price = db.Column(db.Numeric(10,2))
 	def __init__(self, reserver_id, sauna_id, date,  time_start, time_end, varattu):
 		self.reserver_id = reserver_id
 		self.sauna_id = sauna_id

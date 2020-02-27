@@ -24,29 +24,38 @@
 		<td>Luontipäivämäärä: {{sauna.date_created}}</td>
 	</tr>
 	<tr>
-		<td>Tänään: {{timen}}</td>
+		<td>Tuntihinta: {{sauna.hourly_price}} €</td>
 	</tr>
 	<tr>
-		<a href="{{url_for('new_vuoro', id=sauna.id)}}">Tee varaus</a>
+		<td>Tänään: {{timen}}</td>
 	</tr>
+	{% if current_user in sauna.admins %}
+	<tr>
+		<td>Saunan tähänastiset tulot: {{past_tulot}} €</td>
+	</tr>
+	<tr>
+		<td>Saunan tulevat tulot: {{future_tulot}} €</td>
+	</tr>
+	<tr>
+		<a href="{{url_for('new_vuoro', id=sauna.id)}}">Tee uusi saunavuoro</a>
+	</tr>
+	{% endif %}
 	<tr>
 		<td>Vuorot:</td>
 	</tr>
 	{% for vuoro in vuorot %}
 	<tr>
-		<td>{{ vuoro.id }}</td>
-		<td>{{ vuoro.date }}</td>
+		<td>päivämäärä: {{ vuoro.date }}</td>
+		<td>hinta: {{vuoro.price}} €</td>
 		{% if vuoro.varattu == True %}
 		<td>	Varattu 	</td>
 		{% else %}
 		<td>	Vapaa!!!	</td>
 		{% endif %}
-		<td><a href="{{url_for('vuoro_id', id=vuoro.id)}}">{{ vuoro.time_start }}</a></td>
+		<td><a href="{{url_for('vuoro_id', id=vuoro.id)}}">Klo: {{ vuoro.time_start }} - {{ vuoro.time_end }}</a></td>
 		<td>{{ vuoro.reserver_id }}</td>
 	</tr>
 	{% endfor %}
-
-
 </table>
 
 <form method="GET" action="{{ url_for('sauna_update', id=sauna.id) }}">
