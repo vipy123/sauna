@@ -7,25 +7,32 @@
 
 
 ## Tietokantakaavio
-![tietokantakaavio](uml-model.png)
+![tietokantakaavio](tietokantakaavio.png)
 
 
 ## User storyt
 
 Eri käyttäjäryhmät:
 * Isännöitsiä/huotoyhtiö/admin eli käyttäjä, jolla on role:"ADMIN":
-	* luoda tunnukset ja kirjautua palveluun
+	* voi luoda tunnukset ja kirjautua palveluun
 	* voi luoda uuden saunan 
+	* voi muokata hallinnoimansa saunan tietoja
+	* voi tarkastella saunalistausta 
+	* voi poistaa hallinnoimansa saunan
 	* voi luoda saunavuoroja
-	* hallinnoida vuoroja ja nähdä, mihin aikaan saunaa pitää lämmittää
-	* lisätä saunalle adminkäyttäjän 
-* peruskäyttäjä, eli käyttäjä, jolla on role: "USER" tai "ANY":
-	* luoda tunnukset ja kirjautua palveluun
-	* voi katsella ja selata saunoja 
+	* voi hallinnoida ja muokata vuoroja ja nähdä, mihin aikaan saunaa pitää lämmittää
+	* voi poistaa vuoroja hallinnoimaltaan saunalta
+	* voi lisätä saunalle adminkäyttäjän 
+	* näkee saunan menneiden ja tulevien vuorojen tulot
+	* voi tarkastella yhteenvetoa, jossa näytetään käyttäjän vuorojen määrä ja saunat sekä saunoista saadut tulot
+* Peruskäyttäjä, eli käyttäjä, jolla on role: "USER" tai "ANY":
+	* voi luoda tunnukset ja kirjautua palveluun
+	* voi tarkastella saunalistausta
 	* voi selata saunan saunavuoroja ja muita tietoja
 	* varata saunavuoroja
-
-![user-story-kaavio](User-story-Diagram.png)
+	* voi katsella vuoron tietoja
+	* voi vapauttaa oman vuoronsa
+	* voi tarkastella yhteenvetoa, jossa näytetään käyttäjän vuorojen määrä ja saunat
 
 
 ## Ohjeet ohjelman käyttöön
@@ -41,10 +48,7 @@ Eri käyttäjäryhmät:
 
 ## Puutteet ja rajoitteet
 
-* Yksittäisen vuoron tietoja ei vielä pysty katselemaan ja muuttamaan
-* Yhteenvetokyselyä ei vielä toteutettu
-* Saunalle ei vielä pysty asesttamaan hintaa eikä hintoja näy
-* Ohjelmalla on turhia dependancyja
+* Ohjelmalla on luultavasti turhia dependancyja
 
 ## Sovelluksen paikallinen asennusohje
 * Mene [Tänne](https://github.com/vipy123/sauna) eli repositorion pääkansioon ja lataa ohjelma zippinä kohdasta "Clone or download"

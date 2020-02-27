@@ -19,6 +19,7 @@ class Sauna(db.Model):
 	def __init__(self, name, address):
 		self.name = name
 		self.address = address
+		
 	
 	@staticmethod
 	def show_future_vuorot(id):
@@ -62,7 +63,6 @@ class Vuoro(db.Model):
 	__tablename__="vuoro"
 	id = db.Column(db.Integer, primary_key=True)
 	reserver_id = db.Column(db.Integer, db.ForeignKey("kayttaja.id"), nullable=False)
-	#reserver = db.relationship("Kayttaja", backref="Vuoro")
 	sauna_id = db.Column(db.Integer, db.ForeignKey("sauna.id"), nullable=False)
 	sauna = db.relationship("Sauna", backref="Vuoro", lazy=True)
 	date = db.Column(db.Date, nullable=False)

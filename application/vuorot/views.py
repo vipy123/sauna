@@ -30,6 +30,7 @@ def tallenna_sauna():
 		return render_template("saunat/new.html", form=form)
 	sauna = Sauna(form.name.data, form.address.data)
 	sauna.hourly_price = form.hourly_price.data
+	sauna.date_created = datetime.datetime.now()
 	db.session().add(sauna)
 	db.session().commit()
 	sauna = Sauna.query.filter_by(name=form.name.data).first()
@@ -198,7 +199,7 @@ def vuoro_update(id):
 	return redirect(url_for("sauna_id", id=sauna.id))
 
 @app.route("/vuorot/<id>/delete", methods=["POST"])
-@login_required
+@login_required(role="ADMIN")
 def vuoro_delete(id):
 	
 	vuoro = Vuoro.query.get(id)
