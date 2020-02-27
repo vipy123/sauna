@@ -178,9 +178,9 @@ def vuoro_update(id):
 	if vuoro.varattu == False:
 		vuoro.reserver_id=current_user.id
 		vuoro.varattu = form.varattu.data
-	sauna_id=id
-
-	if current_user.roles=='ADMIN':
+	
+	sauna = Sauna.query.get(vuoro.sauna_id)
+	if current_user in sauna.admins:
 		vuoro.date= form.datef.data
 		vuoro.time_start = form.timestartf.data
 		vuoro.time_end = form.timeendf.data
@@ -191,7 +191,7 @@ def vuoro_update(id):
 	time_end_dt = datetime.datetime.combine(datetime.datetime(1,1,1,0,0,0), vuoro.time_end)
 	timedelta = time_end_dt - time_start_dt
 	time_decimal = timedelta.total_seconds()/3600
-	sauna = Sauna.query.get(vuoro.sauna_id)
+	
 	vuoro.price = sauna.hourly_price * Decimal(time_decimal)
 	db.session().commit()
 	
@@ -200,8 +200,12 @@ def vuoro_update(id):
 @app.route("/vuorot/<id>/delete", methods=["POST"])
 @login_required
 def vuoro_delete(id):
+	
 	vuoro = Vuoro.query.get(id)
+	sauna = Sauna.query.get(vuoro.sauna_id)
 	sauna_id = vuoro.sauna_id
-	db.session.delete(vuoro)
-	db.session.commit()
+	if current_user in sauna.admins:
+		
+		db.session.delete(vuoro)
+		db.session.commit()
 	return redirect(url_for("sauna_id", id=sauna_id))
