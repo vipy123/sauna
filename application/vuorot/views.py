@@ -159,21 +159,34 @@ def vuoro_id(id):
 	form.timestartf.data = vuoro.time_start
 	form.timeendf.data = vuoro.time_end
 	form.varattu.data = vuoro.varattu
+	kayttaja = Kayttaja.query.get(vuoro.reserver_id)
+	varaajannimi = kayttaja.name
 
-	return render_template("vuorot/vuoro.html", vuoro=vuoro, form=form)
+	return render_template("vuorot/vuoro.html", vuoro=vuoro, form=form, varaaja=varaajannimi)
 
 @app.route("/vuorot/<id>", methods=["POST"])
 @login_required
 def vuoro_update(id):
 	vuoro = Vuoro.query.get(id)
 	form = VuoroForm(request.form)
-	
-	reserver_id=current_user.id
+	vuoro.reserver_id = vuoro.reserver_id
+	vuoro.date = vuoro.date
+	vuoro.time_start = vuoro.time_start
+	vuoro.time_end = vuoro.time_end
+	vuoro.varattu = vuoro.varattu
+
+	if vuoro.varattu == False:
+		vuoro.reserver_id=current_user.id
+		vuoro.varattu = form.varattu.data
 	sauna_id=id
-	vuoro.date= form.datef.data
-	vuoro.time_start = form.timestartf.data
-	vuoro.time_end = form.timeendf.data
-	vuoro.varattu = form.varattu.data
+
+	if current_user.roles=='ADMIN':
+		vuoro.date= form.datef.data
+		vuoro.time_start = form.timestartf.data
+		vuoro.time_end = form.timeendf.data
+		vuoro.varattu = form.varattu.data
+
+
 	time_start_dt = datetime.datetime.combine(datetime.datetime(1,1,1,0,0,0), vuoro.time_start)
 	time_end_dt = datetime.datetime.combine(datetime.datetime(1,1,1,0,0,0), vuoro.time_end)
 	timedelta = time_end_dt - time_start_dt

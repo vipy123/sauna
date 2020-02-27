@@ -21,7 +21,6 @@ class Kayttaja(db.Model):
 	password = db.Column(db.String(144), nullable=False)
 	email = db.Column(db.String(144))
 	phonenumber = db.Column(db.String(20))
-	#vuorot = db.relationship("vuoro", back_populates='reserver', lazy=True)
 
 	saunat = db.relationship("Sauna", secondary=saunaadmin, cascade="all,delete", back_populates='admins')
 	roles = db.Column(db.String(10), nullable=False)
@@ -84,6 +83,6 @@ class Kayttaja(db.Model):
 		for row in res:
 			response.append(row[0])
 
-		return response
+		return response[0]
 
 	
