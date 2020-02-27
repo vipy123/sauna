@@ -104,6 +104,7 @@ def sauna_updateInfo(id):
 def sauna_delete(id):
 	sauna = Sauna.query.get(id)
 	if current_user in sauna.admins:
+		
 		for vuoro in sauna.vuorot:
 			db.session.delete(vuoro)
 		current_user.saunat.remove(sauna)
