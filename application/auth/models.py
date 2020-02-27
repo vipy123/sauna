@@ -23,7 +23,7 @@ class Kayttaja(db.Model):
 	phonenumber = db.Column(db.String(20))
 	#vuorot = db.relationship("vuoro", back_populates='reserver', lazy=True)
 
-	saunat = db.relationship("Sauna", secondary=saunaadmin, back_populates='admins')
+	saunat = db.relationship("Sauna", secondary=saunaadmin, cascade="all,delete", back_populates='admins')
 	roles = db.Column(db.String(10), nullable=False)
 
 
@@ -74,3 +74,5 @@ class Kayttaja(db.Model):
 			count2.append(row[0])
 
 		return count2[0]
+
+	

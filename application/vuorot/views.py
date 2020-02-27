@@ -29,12 +29,13 @@ def tallenna_sauna():
 	if not form.validate():
 		return render_template("saunat/new.html", form=form)
 	sauna = Sauna(form.name.data, form.address.data)
-	
+	sauna.hourly_price = form.hourly_price.data
 	db.session().add(sauna)
 	db.session().commit()
 	sauna = Sauna.query.filter_by(name=form.name.data).first()
 	#stmt = text("INSERT INTO saunaadmin (kayttaja_id, sauna_id) VALUES(:k_id, :s_id)").params(k_id=current_user.id, s_id=sauna.id)
 	#db.engine.execute(stmt)
+	sauna
 	sauna.admins.append(current_user)
 	
 	db.session().commit()
@@ -69,6 +70,7 @@ def sauna_update(id):
 		form.name.data=sauna.name
 		form.address.data = sauna.address
 		form.newadmin.choices = choices
+		form.hourly_price.data = sauna.hourly_price
 
 		return render_template("saunat/updateSauna.html", form=form, sauna=sauna)
 
@@ -80,28 +82,38 @@ def sauna_update(id):
 def sauna_updateInfo(id):
 	authtext =""
 	form = SaunaUpdateForm(request.form)
-	name = request.form.get("name")
-	address=request.form.get("address")
+	name = form.name.data
+	address = form.address.data
 	sauna = Sauna.query.get(id)
 	sauna.name = name
 	sauna.address = address
 	newadminid = form.newadmin.data
 	newadmin = Kayttaja.query.get(newadminid)
+	sauna.hourly_price = form.hourly_price.data
 	if newadminid != current_user.id:
-		#sauna.admins.append(newadmin)
-		stmt = text("INSERT INTO saunaadmin (kayttaja_id, sauna_id) VALUES(:k_id, :s_id)").params(k_id=newadminid, s_id=sauna.id)
-		db.engine.execute(stmt)
+		sauna.admins.append(newadmin)
+		#stmt = text("INSERT INTO saunaadmin (kayttaja_id, sauna_id) VALUES(:k_id, :s_id)").params(k_id=newadminid, s_id=sauna.id)
+		#db.engine.execute(stmt)
 
 	db.session().commit()
 
 	return redirect(url_for("sauna_index"))
 
 @app.route("/saunat/delete/<id>", methods=["POST"])
-@login_required
+@login_required(role="ADMIN")
 def sauna_delete(id):
 	sauna = Sauna.query.get(id)
-	db.session.delete(sauna)
-	db.session.commit()
+	if current_user in sauna.admins:
+		#sauna.delete_sauna_admins(sauna.id)
+		#sauna_admins = sauna.get_sauna_admins(sauna)
+		#for sadmin in sauna_admins:
+		#	db.session.delete(sadmin)
+		current_user.saunat.remove(sauna)
+		for admin in sauna.admins:
+			sauna.admins.remove(admin)
+		db.session.commit()
+		db.session.delete(sauna)
+		#db.session.commit()
 
 	return redirect(url_for("sauna_index"))
 
