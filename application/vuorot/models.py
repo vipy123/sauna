@@ -42,7 +42,7 @@ class Sauna(db.Model):
 			return False
 	@staticmethod
 	def get_sauna_past_tulot(self):
-		stmt = text("SELECT SUM(price) FROM Vuoro WHERE Vuoro.sauna_id = :s_id AND Vuoro.date < CURRENT_DATE").params(s_id = self.id)
+		stmt = text("SELECT SUM(price) FROM Vuoro WHERE Vuoro.sauna_id = :s_id AND Vuoro.date < CURRENT_DATE AND Vuoro.varattu =1").params(s_id = self.id)
 		res = db.engine.execute(stmt)
 		response = []
 		for row in res:
@@ -51,7 +51,7 @@ class Sauna(db.Model):
 
 	@staticmethod
 	def get_sauna_future_tulot(self):
-		stmt = text("SELECT SUM(price) FROM Vuoro WHERE Vuoro.sauna_id = :s_id AND Vuoro.date >= CURRENT_DATE").params(s_id = self.id)
+		stmt = text("SELECT SUM(price) FROM Vuoro WHERE Vuoro.sauna_id = :s_id AND Vuoro.date >= CURRENT_DATE AND Vuoro.varattu = 1").params(s_id = self.id)
 		res = db.engine.execute(stmt)
 		response = []
 		for row in res:

@@ -23,7 +23,7 @@ class VuoroForm(FlaskForm):
 	datef = DateField("Päivämäärä: ")
 	timestartf = TimeField("Aloitusaika: HH:MM", format='%H:%M')
 	timeendf = TimeField("Lopetusaika: HH:MM", format='%H:%M')
-	varattu = BooleanField("Imoitetaan varatuksi", False)
+	varattu = BooleanField("Ilmoitetaan varatuksi", False)
 
 	class Meta:
 		csrf = False

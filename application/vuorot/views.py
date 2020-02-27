@@ -104,16 +104,14 @@ def sauna_updateInfo(id):
 def sauna_delete(id):
 	sauna = Sauna.query.get(id)
 	if current_user in sauna.admins:
-		#sauna.delete_sauna_admins(sauna.id)
-		#sauna_admins = sauna.get_sauna_admins(sauna)
-		#for sadmin in sauna_admins:
-		#	db.session.delete(sadmin)
+		for vuoro in sauna.vuorot:
+			db.session.delete(vuoro)
 		current_user.saunat.remove(sauna)
 		for admin in sauna.admins:
 			sauna.admins.remove(admin)
-		db.session.commit()
+		
 		db.session.delete(sauna)
-		#db.session.commit()
+		db.session.commit()
 
 	return redirect(url_for("sauna_index"))
 
