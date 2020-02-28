@@ -4,18 +4,20 @@
 {% block body %}
 <table>
 	<tr>
-		<th>Hei {{current_user.name}}! Sinulla on {{maara}} varausta saunoihin: </th>
+		<th>Hei {{current_user.name}}! Sinulla on {{maara}} vuoroa saunoihin: </th>
 	</tr>
 	<tr>
 		<th>
 			{% for sauna in yhteenveto_kayttajan_saunoista %}
-			{{ sauna }},
+			{{ sauna }}   
 			{% endfor %}
 		</th>
 	</tr>
 	<tr>
 		<th>
+			{% if show %}
 			Tähänastiset tulot hallinnoimistasi saunoista {{ tulot }} €
+			{% endif %}
 		</th>
 	</tr>
 	

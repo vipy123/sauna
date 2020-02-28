@@ -50,8 +50,8 @@ class Kayttaja(db.Model):
 		return roles
 
 	@staticmethod
-	def saunat_joihin_varauksia(k_id):
-		stmt = text('SELECT DISTINCT name FROM sauna LEFT JOIN vuoro ON sauna.id = vuoro.sauna_id WHERE vuoro.reserver_id = :kid').params(kid = k_id)
+	def saunat_joihin_varauksia(kayttaja_id):
+		stmt = text('SELECT DISTINCT name FROM sauna LEFT JOIN vuoro ON sauna.id = vuoro.sauna_id WHERE vuoro.reserver_id = :kayttajaid').params(kayttajaid = kayttaja_id)
 		
 		res = db.engine.execute(stmt)
 		response = []
@@ -62,9 +62,9 @@ class Kayttaja(db.Model):
 		return response
 
 	@staticmethod
-	def saunavarausten_maara(k_id):
+	def saunavarausten_maara(kayttaja_id):
 		
-		countstmt = text('SELECT COUNT(DISTINCT name) FROM sauna LEFT JOIN vuoro ON sauna.id = vuoro.sauna_id WHERE vuoro.reserver_id = :kid').params(kid = k_id)
+		countstmt = text('SELECT COUNT(DISTINCT name) FROM sauna LEFT JOIN vuoro ON sauna.id = vuoro.sauna_id WHERE vuoro.reserver_id = :kayttajaid').params(kayttajaid = kayttaja_id)
 		count = db.engine.execute(countstmt)
 		
 		count2= []
@@ -75,8 +75,8 @@ class Kayttaja(db.Model):
 		return count2[0]
 
 	@staticmethod
-	def tulot_saunoista(k_id):
-		stmt = text("SELECT SUM(price) FROM Vuoro JOIN Sauna ON Vuoro.sauna_id = Sauna.id JOIN saunaadmin ON Sauna.id = saunaadmin.sauna_id WHERE saunaadmin.kayttaja_id = :kid AND Vuoro.date < CURRENT_DATE AND Vuoro.varattu ='1'").params(kid = k_id)
+	def tulot_saunoista(kayttaja_id):
+		stmt = text("SELECT SUM(price) FROM Vuoro JOIN Sauna ON Vuoro.sauna_id = Sauna.id JOIN saunaadmin ON Sauna.id = saunaadmin.sauna_id WHERE saunaadmin.kayttaja_id = :kayttaja_id AND Vuoro.date < CURRENT_DATE AND Vuoro.varattu ='1'").params(kayttaja_id = kayttaja_id)
 		res = db.engine.execute(stmt)
 		response = []
 		

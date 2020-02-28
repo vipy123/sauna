@@ -53,7 +53,6 @@
 		<td>	Vapaa!!!	</td>
 		{% endif %}
 		<td><a href="{{url_for('vuoro_id', id=vuoro.id)}}">Klo: {{ vuoro.time_start }} - {{ vuoro.time_end }}</a></td>
-		<td>{{ vuoro.reserver_id }}</td>
 	</tr>
 	{% endfor %}
 </table>

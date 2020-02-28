@@ -179,8 +179,12 @@ def vuoro_update(id):
 	if vuoro.varattu == False or vuoro.reserver_id==current_user.id:
 		vuoro.reserver_id=current_user.id
 		vuoro.varattu = form.varattu.data
-	
+
 	sauna = Sauna.query.get(vuoro.sauna_id)
+	if form.varattu.data==False:
+		vuoro.reserver_id = sauna.admins[0].id
+	
+	
 	if current_user in sauna.admins:
 		vuoro.date= form.datef.data
 		vuoro.time_start = form.timestartf.data
