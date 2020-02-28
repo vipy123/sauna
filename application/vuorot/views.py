@@ -89,14 +89,16 @@ def sauna_update(id):
 def sauna_updateInfo(id):
 	authtext =""
 	form = SaunaUpdateForm(request.form)
+	
 	name = form.name.data
 	address = form.address.data
 	sauna = Sauna.query.get(id)
-	sauna.name = name
-	sauna.address = address
-	newadminid = form.newadmin.data
-	newadmin = Kayttaja.query.get(newadminid)
-	sauna.hourly_price = form.hourly_price.data
+	if current_user in sauna.admins:
+		sauna.name = name
+		sauna.address = address
+		newadminid = form.newadmin.data
+		newadmin = Kayttaja.query.get(newadminid)
+		sauna.hourly_price = form.hourly_price.data
 	if newadminid != current_user.id:
 		sauna.admins.append(newadmin)
 
