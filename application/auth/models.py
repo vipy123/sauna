@@ -76,7 +76,7 @@ class Kayttaja(db.Model):
 
 	@staticmethod
 	def tulot_saunoista(kayttaja_id):
-		stmt = text("SELECT SUM(price) FROM Vuoro JOIN Sauna ON Vuoro.sauna_id = Sauna.id JOIN saunaadmin ON Sauna.id = saunaadmin.sauna_id WHERE saunaadmin.kayttaja_id = :kayttaja_id AND Vuoro.date < CURRENT_DATE AND Vuoro.varattu ='1'").params(kayttaja_id = kayttaja_id)
+		stmt = text("SELECT SUM(price) FROM Vuoro LEFT JOIN Sauna ON Vuoro.sauna_id = Sauna.id LEFT JOIN saunaadmin ON Sauna.id = saunaadmin.sauna_id WHERE saunaadmin.kayttaja_id = :kayttaja_id AND Vuoro.date < CURRENT_DATE AND Vuoro.varattu ='1'").params(kayttaja_id = kayttaja_id)
 		res = db.engine.execute(stmt)
 		response = []
 		

@@ -99,8 +99,8 @@ def sauna_updateInfo(id):
 		newadminid = form.newadmin.data
 		newadmin = Kayttaja.query.get(newadminid)
 		sauna.hourly_price = form.hourly_price.data
-	if newadminid != current_user.id:
-		sauna.admins.append(newadmin)
+		if newadminid != current_user.id:
+			sauna.admins.append(newadmin)
 
 	db.session().commit()
 
