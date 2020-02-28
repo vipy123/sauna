@@ -176,7 +176,7 @@ def vuoro_update(id):
 	vuoro.time_end = vuoro.time_end
 	vuoro.varattu = vuoro.varattu
 
-	if vuoro.varattu == False:
+	if vuoro.varattu == False or vuoro.reserver_id==current_user.id:
 		vuoro.reserver_id=current_user.id
 		vuoro.varattu = form.varattu.data
 	
