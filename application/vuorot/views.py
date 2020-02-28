@@ -53,6 +53,10 @@ def sauna_id(id):
 	if current_user in sauna.admins:
 		sauna_past_tulot =sauna.get_sauna_past_tulot(sauna)
 		sauna_future_tulot = sauna.get_sauna_future_tulot(sauna)
+		if sauna_past_tulot == None:
+			sauna_past_tulot = 0
+		if sauna_future_tulot == None:
+			sauna_future_tulot = 0
 
 	return render_template("saunat/sauna.html", sauna=sauna, vuorot=sauna.vuorot,
 	timen=timen, admins=admins, authtext=authtext, past_tulot=sauna_past_tulot, future_tulot = sauna_future_tulot)
