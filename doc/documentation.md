@@ -13,7 +13,7 @@
 ## User storyt
 
 Eri käyttäjäryhmät:
-* Isännöitsiä/huotoyhtiö/admin eli käyttäjä, jolla on role:"ADMIN":
+* Isännöitsijä/huotoyhtiö/admin eli käyttäjä, jolla on role:"ADMIN":
 	* voi luoda tunnukset ja kirjautua palveluun
 	* voi luoda uuden saunan 
 	* voi muokata hallinnoimansa saunan tietoja
@@ -24,7 +24,7 @@ Eri käyttäjäryhmät:
 	* voi poistaa vuoroja hallinnoimaltaan saunalta
 	* voi lisätä saunalle adminkäyttäjän 
 	* näkee saunan menneiden ja tulevien vuorojen tulot
-	* voi tarkastella yhteenvetoa, jossa näytetään käyttäjän vuorojen määrä ja saunat sekä saunoista saadut tulot
+	* voi tarkastella yhteenvetoa, jossa näytetään käyttäjän vuorojen määrä ja vuorojen saunat sekä hallinnoitavista saunoista saadut tulot
 * Peruskäyttäjä, eli käyttäjä, jolla on role: "USER" tai "ANY":
 	* voi luoda tunnukset ja kirjautua palveluun
 	* voi tarkastella saunalistausta
@@ -80,11 +80,11 @@ CREATE TABLE sauna (
 	date_current DATE, 
 	name VARCHAR(144) NOT NULL, 
 	address VARCHAR(200) NOT NULL, 
-	hourly_price FLOAT, 
+	hourly_price NUMERIC(10, 2), 
 	PRIMARY KEY (id)
 )
 
-CREATE TABLE "SaunaKayttaja" (
+CREATE TABLE saunaadmin (
 	kayttaja_id INTEGER, 
 	sauna_id INTEGER, 
 	FOREIGN KEY(kayttaja_id) REFERENCES kayttaja (id), 
@@ -99,12 +99,13 @@ CREATE TABLE vuoro (
 	time_start TIME NOT NULL, 
 	time_end TIME NOT NULL, 
 	varattu BOOLEAN, 
-	price FLOAT, 
+	price NUMERIC(10, 2), 
 	PRIMARY KEY (id), 
 	FOREIGN KEY(reserver_id) REFERENCES kayttaja (id), 
 	FOREIGN KEY(sauna_id) REFERENCES sauna (id), 
 	CHECK (varattu IN (0, 1))
 )
+
 
 
 

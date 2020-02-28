@@ -5,7 +5,7 @@ Taloyhtiöillä on käytössään oman saunansa varaukset, joita pääsee hallin
 
 [Täältä löytyy dokumentaatio](doc/documentation.md)
 
-Ohjelmaa voi käyttää esimrkiksi tietokantaan lisätyllä käyttäjätunnuksella:
+Ohjelmaa voi käyttää esimerkiksi tietokantaan lisätyillä käyttäjätunnuksilla:
 * username: "admin"
 * password: "password"
 tai omilla tunnuksilla.
